@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"HTML:%{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(curl -s -o /dev/null -w \"VIDEO:%{http_code}\\\\n\" http://localhost:5173/animation.mp4)",
+      "Bash(curl -s http://localhost:5173/src/main.jsx -o /dev/null -w \"MAIN:%{http_code}\\\\n\")",
+      "Bash(ffmpeg -version)",
+      "PowerShell(winget --version; Write-Output \"---\"; \\(Get-Command ffmpeg -ErrorAction SilentlyContinue\\).Source)",
+      "PowerShell(winget install --id Gyan.FFmpeg -e --accept-package-agreements --accept-source-agreements --disable-interactivity 2>&1)",
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); $ff = \\(Get-Command ffmpeg -ErrorAction SilentlyContinue\\).Source; if \\(-not $ff\\) { $ff = \\(Get-ChildItem \"$env:LOCALAPPDATA\\\\Microsoft\\\\WinGet\" -Recurse -Filter ffmpeg.exe -ErrorAction SilentlyContinue | Select-Object -First 1\\).FullName }; Write-Output $ff; & $ff -version | Select-Object -First 1)",
+      "PowerShell($bin = \"C:\\\\Users\\\\MatiasPC\\\\AppData\\\\Local\\\\Microsoft\\\\WinGet\\\\Packages\\\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\\\ffmpeg-8.1.1-full_build\\\\bin\"; & \"$bin\\\\ffprobe.exe\" -v error -select_streams v:0 -show_entries stream=codec_name,width,height,r_frame_rate,nb_frames,bit_rate -show_entries format=duration,size -of default=noprint_wrappers=1 \"C:\\\\Users\\\\MatiasPC\\\\Desktop\\\\mundial-2026\\\\animation.mp4\")",
+      "PowerShell($bin = \"C:\\\\Users\\\\MatiasPC\\\\AppData\\\\Local\\\\Microsoft\\\\WinGet\\\\Packages\\\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\\\ffmpeg-8.1.1-full_build\\\\bin\"; & \"$bin\\\\ffprobe.exe\" -v error -select_streams v:0 -show_entries stream=codec_name,width,height,r_frame_rate,nb_frames -show_entries format=duration -of default=noprint_wrappers=1 \"C:\\\\Users\\\\MatiasPC\\\\Desktop\\\\mundial-2026\\\\animation-mobile.mp4\")"
+    ]
+  }
+}
