@@ -6,7 +6,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import NavBar from './components/NavBar'
 import HeroSection from './components/HeroSection'
 import ScrollVideoSection from './components/ScrollVideoSection'
+import SocialProofSection from './components/SocialProofSection'
 import FeaturesSection from './components/FeaturesSection'
+import FAQSection from './components/FAQSection'
 import PricingSection from './components/PricingSection'
 import CTASection from './components/CTASection'
 
@@ -51,7 +53,9 @@ export default function App() {
       <NavBar />
       <HeroSection />
       <ScrollVideoSection />
+      <SocialProofSection />
       <FeaturesSection />
+      <FAQSection />
       <PricingSection />
       <CTASection />
     </main>

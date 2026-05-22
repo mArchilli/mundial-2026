@@ -50,12 +50,14 @@ const STEPS = [
 ]
 
 const SPECS = [
-  { icon: Ruler,       label: 'Altura de chispa', value: 'Hasta 2 metros' },
-  { icon: Thermometer, label: 'Temperatura',      value: 'Fría al tacto' },
-  { icon: Boxes,       label: 'Material',         value: 'PLA premium 3D' },
-  { icon: Award,       label: 'Altura de la Copa',value: '37 cm' },
-  { icon: RefreshCw,   label: 'Cartuchos',        value: 'Reemplazables' },
-  { icon: Clock,       label: 'Activación',       value: 'Botón en la base' },
+  { icon: Ruler,       label: 'Altura de chispa',    value: 'Hasta 2 metros' },
+  { icon: Thermometer, label: 'Temperatura',         value: 'Fría al tacto' },
+  { icon: Boxes,       label: 'Material',            value: 'PLA premium 3D' },
+  { icon: Award,       label: 'Altura de la Copa',   value: '37 cm' },
+  { icon: Clock,       label: 'Duración por cartucho',value: '30 s c/u' },
+  { icon: RefreshCw,   label: 'Cartuchos',           value: 'Reemplazables · 30 s' },
+  { icon: Package,     label: 'Cartuchos de repuesto',value: 'Próximamente' },
+  { icon: CircleDot,   label: 'Activación',          value: 'Botón en la base' },
 ]
 
 export default function FeaturesSection() {

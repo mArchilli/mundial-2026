@@ -115,14 +115,17 @@ export default function HeroSection() {
           <span className="block text-gradient-gold">la gloria</span>
         </h1>
 
-        <p className="hero-sub mt-7 max-w-2xl text-base text-bg/60 sm:text-lg">
-          En <strong className="font-bold text-bg/80">Chisperío</strong> creamos efectos de
-          chispa fría para los eventos más memorables. Ahora lo volvemos trofeo: la{' '}
-          <strong className="font-bold text-bg/80">Copa Mundial 2026</strong>, una réplica que
-          enciende una fuente de chispas con solo apretar un botón.
-        </p>
+        <div className="hero-sub mt-7 max-w-2xl">
+          <p className="text-xl font-medium leading-snug text-bg/80 sm:text-2xl">
+            Una réplica de la <strong className="font-bold text-bg">Copa Mundial 2026</strong> que
+            lanza chispas frías con solo apretar un botón.
+          </p>
+          <p className="mt-3 text-base text-bg/55 sm:text-lg">
+            Impresa en 3D. Sin humo. Sin calor.
+          </p>
+        </div>
 
-        <div className="hero-cta mt-9 flex flex-col items-center gap-3 sm:flex-row">
+        <div className="hero-cta mt-9 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
           <a
             href="#comprar"
             className="group relative overflow-hidden rounded-full bg-gold-gradient px-9 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105"
@@ -132,9 +135,10 @@ export default function HeroSection() {
           </a>
           <a
             href="#como-funciona"
-            className="rounded-full border border-primary/50 px-9 py-4 text-sm font-bold uppercase tracking-wider text-primary-dark transition-colors duration-300 hover:bg-primary/8"
+            className="group inline-flex items-center gap-1.5 text-sm font-medium text-bg/60 underline-offset-4 transition-colors duration-300 hover:text-primary-dark hover:underline"
           >
             Ver cómo funciona
+            <ChevronDown className="h-4 w-4 -rotate-90 transition-transform duration-300 group-hover:translate-x-0.5" />
           </a>
         </div>
 

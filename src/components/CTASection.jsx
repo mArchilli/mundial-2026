@@ -94,51 +94,70 @@ export default function CTASection() {
           Hasta el inicio del FIFA World Cup 2026™ — 11 de junio de 2026
         </p>
 
-        {/* Formulario */}
-        {status === 'done' ? (
-          <div className="cta-anim mx-auto mt-10 flex max-w-md items-center justify-center gap-3 rounded-full border border-primary/40 bg-primary/8 px-6 py-4 text-primary-dark">
-            <Check className="h-5 w-5" />
-            <span className="font-medium">¡Listo! Te avisaremos primero.</span>
-          </div>
-        ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="cta-anim mx-auto mt-10 flex w-full max-w-md flex-col gap-3 sm:flex-row"
-            noValidate
+        {/* CTA primario — compra directa */}
+        <div className="cta-anim mt-10 flex flex-col items-center">
+          <a
+            href="#comprar"
+            className="group relative overflow-hidden rounded-full bg-gold-gradient px-12 py-5 text-base font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105"
           >
-            <div className="relative flex-1">
-              <Mail className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary/60" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value)
-                  if (status === 'error') setStatus('idle')
-                }}
-                placeholder="tu@email.com"
-                aria-label="Correo electrónico"
-                className={`w-full rounded-full border bg-[#F8F4EC] py-4 pl-12 pr-4 text-bg placeholder:text-bg/30 outline-none transition-colors ${
-                  status === 'error'
-                    ? 'border-red-400'
-                    : 'border-primary/25 focus:border-primary'
-                }`}
-              />
-            </div>
-            <button
-              type="submit"
-              className="group relative overflow-hidden rounded-full bg-gold-gradient px-7 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105"
-            >
-              <span className="relative z-10">Quiero ser el primero</span>
-              <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
-            </button>
-          </form>
-        )}
-
-        {status === 'error' && (
-          <p className="mt-3 text-sm text-red-500">
-            Ingresá un correo electrónico válido.
+            <span className="relative z-10">Comprar ahora · US$200</span>
+            <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
+          </a>
+          <p className="mt-3 text-xs uppercase tracking-[0.18em] text-bg/40">
+            Pre-venta abierta · Envío incluido
           </p>
-        )}
+        </div>
+
+        {/* Lista de espera — secundaria, para stock agotado */}
+        <div className="cta-anim mx-auto mt-12 max-w-md border-t border-primary/15 pt-8">
+          <p className="text-sm text-bg/55">
+            ¿Se te fue la fecha o se agotó el stock? Dejá tu mail y te avisamos si
+            liberamos más unidades.
+          </p>
+          {status === 'done' ? (
+            <div className="mx-auto mt-5 flex items-center justify-center gap-3 rounded-full border border-primary/40 bg-primary/8 px-6 py-3.5 text-primary-dark">
+              <Check className="h-5 w-5" />
+              <span className="font-medium">¡Listo! Te avisaremos si hay stock.</span>
+            </div>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="mt-5 flex w-full flex-col gap-3 sm:flex-row"
+              noValidate
+            >
+              <div className="relative flex-1">
+                <Mail className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary/60" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    if (status === 'error') setStatus('idle')
+                  }}
+                  placeholder="tu@email.com"
+                  aria-label="Correo electrónico"
+                  className={`w-full rounded-full border bg-[#F8F4EC] py-3.5 pl-12 pr-4 text-bg placeholder:text-bg/30 outline-none transition-colors ${
+                    status === 'error'
+                      ? 'border-red-400'
+                      : 'border-primary/25 focus:border-primary'
+                  }`}
+                />
+              </div>
+              <button
+                type="submit"
+                className="rounded-full border border-primary/50 px-7 py-3.5 text-sm font-bold uppercase tracking-wider text-primary-dark transition-colors duration-300 hover:bg-primary/8"
+              >
+                Avisarme si se agota
+              </button>
+            </form>
+          )}
+
+          {status === 'error' && (
+            <p className="mt-3 text-sm text-red-500">
+              Ingresá un correo electrónico válido.
+            </p>
+          )}
+        </div>
       </div>
 
       <footer className="relative mt-24 flex flex-col items-center gap-1 text-xs uppercase tracking-[0.25em] text-bg/30">

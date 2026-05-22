@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Boxes, Sparkles, CircleDot } from 'lucide-react'
+import { Boxes, Sparkles, CircleDot, ArrowRight } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -28,7 +28,8 @@ const FEATURES = [
   {
     icon: Sparkles,
     title: 'Porta chispas',
-    desc: 'Aloja un cartucho de chispa fría: una fuente de destellos segura y sin calor.',
+    desc: 'Aloja un cartucho de chispa fría en su interior. Se encastra solo desde arriba, sin herramientas.',
+    pointer: true,
   },
   {
     icon: CircleDot,
@@ -229,9 +230,17 @@ export default function ScrollVideoSection() {
                 return (
                   <article
                     key={i}
-                    className={`feat-side-${i} w-72 max-w-xs rounded-2xl border border-bg/10 bg-white/90 p-5 shadow-lg backdrop-blur-sm`}
+                    className={`feat-side-${i} relative w-72 max-w-xs rounded-2xl border border-bg/10 bg-white/90 p-5 shadow-lg backdrop-blur-sm`}
                     style={{ opacity: 0 }}
                   >
+                    {f.pointer && (
+                      <span className="cartridge-pointer pointer-events-none absolute right-0 top-1/2 flex translate-x-full -translate-y-1/2 items-center pl-2">
+                        <span className="h-px w-8 bg-gradient-to-r from-primary to-primary/0" />
+                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gold-gradient shadow-glow">
+                          <ArrowRight className="h-4 w-4 text-white" strokeWidth={2.6} />
+                        </span>
+                      </span>
+                    )}
                     <div className="flex items-center gap-3">
                       <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
                         <Icon className="h-5 w-5 text-white" strokeWidth={2.2} />
@@ -244,6 +253,11 @@ export default function ScrollVideoSection() {
                       {f.title}
                     </h3>
                     <p className="mt-1.5 text-sm leading-relaxed text-bg/55">{f.desc}</p>
+                    {f.pointer && (
+                      <span className="mt-2 inline-block text-[11px] font-medium uppercase tracking-[0.12em] text-primary-dark">
+                        El cartucho va dentro de la Copa
+                      </span>
+                    )}
                   </article>
                 )
               })}

@@ -1,11 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
-import { Sparkles, Check, Award, Truck, BadgeCheck, CircleDot } from 'lucide-react'
+import {
+  Sparkles, Check, Award, Truck, BadgeCheck, CircleDot, Info,
+  Home, Gift, Beer, PartyPopper,
+} from 'lucide-react'
 import { revealGroups } from '../lib/reveal'
 
 const PACKS = [
   { id: '2x20', label: '2×20', secs: 20, tag: 'Festejo exprés' },
   { id: '2x30', label: '2×30', secs: 30, tag: 'El más elegido', recommended: true },
   { id: '2x40', label: '2×40', secs: 40, tag: 'Máximo show' },
+]
+
+const OCCASIONS = [
+  { icon: Home,        text: 'Festejo en casa con amigos el día del partido' },
+  { icon: Gift,        text: 'Regalo premium para el fanático del fútbol' },
+  { icon: Beer,        text: 'Bares y restaurantes que quieren hacer el show del gol' },
+  { icon: PartyPopper, text: 'Eventos deportivos, cumpleaños y casamientos temáticos' },
 ]
 
 export default function PricingSection() {
@@ -16,7 +26,11 @@ export default function PricingSection() {
   const selected = PACKS.find((p) => p.id === pack)
 
   useEffect(
-    () => revealGroups(root.current, [{ sel: '.buy-anim', stagger: 0.14, y: 44 }]),
+    () =>
+      revealGroups(root.current, [
+        { sel: '.buy-anim', stagger: 0.14, y: 44 },
+        { sel: '.occasion-card', stagger: 0.1, y: 32 },
+      ]),
     [],
   )
 
@@ -54,6 +68,29 @@ export default function PricingSection() {
             La Copa más sus cartuchos de chispa fría. Elegí el pack según cuánto
             quieras que dure el espectáculo — el precio es siempre el mismo.
           </p>
+        </div>
+
+        {/* Para quién es / casos de uso */}
+        <div className="mt-14 w-full">
+          <h3 className="occasion-card text-center font-display text-3xl tracking-wide text-bg sm:text-4xl">
+            ¿Para qué <span className="text-gradient-gold">ocasión</span>?
+          </h3>
+          <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {OCCASIONS.map((o) => {
+              const Icon = o.icon
+              return (
+                <div
+                  key={o.text}
+                  className="occasion-card flex flex-col items-center gap-3 rounded-2xl border border-bg/8 bg-white p-5 text-center shadow-sm"
+                >
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
+                    <Icon className="h-5 w-5 text-white" strokeWidth={2.2} />
+                  </span>
+                  <span className="text-sm leading-relaxed text-bg/65">{o.text}</span>
+                </div>
+              )
+            })}
+          </div>
         </div>
 
         {/* Tarjeta de compra */}
@@ -133,6 +170,13 @@ export default function PricingSection() {
               <p className="mt-2.5 text-xs text-bg/50">
                 Pack <strong className="text-bg/70">{selected.label}</strong>: 2 cartuchos de
                 chispa fría de {selected.secs} segundos de duración cada uno.
+              </p>
+              <p className="mt-2 flex items-start gap-1.5 rounded-lg bg-primary/8 px-3 py-2 text-xs text-bg/55">
+                <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary-dark" strokeWidth={2.2} />
+                <span>
+                  La Copa tiene precio fijo. Los cartuchos son parte del pack de bienvenida,
+                  no un costo adicional.
+                </span>
               </p>
             </div>
 
