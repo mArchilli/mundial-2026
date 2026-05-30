@@ -42,7 +42,7 @@ export default function CTASection() {
   }
 
   const units = [
-    ['Días', time.dias],
+    ['Dias', time.dias],
     ['Horas', time.horas],
     ['Min', time.minutos],
     ['Seg', time.segundos],
@@ -54,7 +54,6 @@ export default function CTASection() {
       ref={root}
       className="grain relative overflow-hidden bg-white px-6 py-32 text-center"
     >
-      {/* Resplandor dorado central */}
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 h-[120vmin] w-[120vmin] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
@@ -69,11 +68,10 @@ export default function CTASection() {
         </span>
 
         <h2 className="cta-anim mt-5 text-6xl leading-[0.9] text-bg sm:text-7xl md:text-8xl">
-          El mundo entero lo estará viendo.{' '}
+          El mundo entero lo estara viendo.{' '}
           <span className="text-gradient-gold">¿Vas a ser parte?</span>
         </h2>
 
-        {/* Countdown */}
         <div className="cta-anim mt-12 flex justify-center gap-3 sm:gap-5">
           {units.map(([label, value]) => (
             <div
@@ -91,11 +89,14 @@ export default function CTASection() {
         </div>
 
         <p className="cta-anim mt-6 text-sm text-bg/45">
-          Hasta el inicio del FIFA World Cup 2026™ — 11 de junio de 2026
+          Hasta el inicio del FIFA World Cup 2026 - 11 de junio de 2026
         </p>
 
-        {/* CTA primario — compra directa */}
         <div className="cta-anim mt-10 flex flex-col items-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-[#F8F4EC] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.22em] text-primary-dark shadow-sm">
+            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-primary shadow-glow" />
+            Edicion limitada de unidades · <span className="scarcity-pulse">40/150 vendidas</span>
+          </div>
           <a
             href="#comprar"
             className="group relative overflow-hidden rounded-full bg-gold-gradient px-12 py-5 text-base font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105"
@@ -104,20 +105,19 @@ export default function CTASection() {
             <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
           </a>
           <p className="mt-3 text-xs uppercase tracking-[0.18em] text-bg/40">
-            Pre-venta abierta · Envío incluido
+            Pre-venta abierta · Envio incluido
           </p>
         </div>
 
-        {/* Lista de espera — secundaria, para stock agotado */}
         <div className="cta-anim mx-auto mt-12 max-w-md border-t border-primary/15 pt-8">
           <p className="text-sm text-bg/55">
-            ¿Se te fue la fecha o se agotó el stock? Dejá tu mail y te avisamos si
-            liberamos más unidades.
+            Se te fue la fecha o se agoto el stock? Deja tu mail y te avisamos si
+            liberamos mas unidades.
           </p>
           {status === 'done' ? (
             <div className="mx-auto mt-5 flex items-center justify-center gap-3 rounded-full border border-primary/40 bg-primary/8 px-6 py-3.5 text-primary-dark">
               <Check className="h-5 w-5" />
-              <span className="font-medium">¡Listo! Te avisaremos si hay stock.</span>
+              <span className="font-medium">Listo! Te avisaremos si hay stock.</span>
             </div>
           ) : (
             <form
@@ -135,7 +135,7 @@ export default function CTASection() {
                     if (status === 'error') setStatus('idle')
                   }}
                   placeholder="tu@email.com"
-                  aria-label="Correo electrónico"
+                  aria-label="Correo electronico"
                   className={`w-full rounded-full border bg-[#F8F4EC] py-3.5 pl-12 pr-4 text-bg placeholder:text-bg/30 outline-none transition-colors ${
                     status === 'error'
                       ? 'border-red-400'
@@ -154,19 +154,21 @@ export default function CTASection() {
 
           {status === 'error' && (
             <p className="mt-3 text-sm text-red-500">
-              Ingresá un correo electrónico válido.
+              Ingresa un correo electronico valido.
             </p>
           )}
         </div>
       </div>
 
       <footer className="relative mt-24 flex flex-col items-center gap-1 text-xs uppercase tracking-[0.25em] text-bg/30">
-        <span className="font-display text-lg tracking-[0.2em] text-bg/55">
-          CHISPER<span className="text-gradient-gold">Í</span>O
-        </span>
-        <span>Copa Mundial 2026 — Encendé la gloria</span>
+        <img
+          src="/images/chisperio-logo.png"
+          alt="Chisperio"
+          className="h-auto w-[130px] opacity-75"
+        />
+        <span>Copa Mundial 2026 - Encende la gloria</span>
         <span className="tracking-[0.15em] text-bg/25">
-          Efectos de chispa fría para eventos
+          Efectos de chispa fria para eventos
         </span>
       </footer>
     </section>

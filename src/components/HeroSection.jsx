@@ -1,15 +1,17 @@
-import { useEffect, useRef, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { gsap } from 'gsap'
-import { ChevronDown, Sparkles, ShieldCheck, Wind, Boxes } from 'lucide-react'
+import { ChevronDown, ShieldCheck, Wind, Boxes } from 'lucide-react'
 
 function GoldParticles() {
   const sparks = useMemo(
     () =>
       Array.from({ length: 16 }, () => ({
         left: Math.random() * 100,
-        size: 2 + Math.random() * 5,
-        duration: 10 + Math.random() * 14,
+        size: 14 + Math.random() * 16,
+        duration: 8 + Math.random() * 10,
         delay: Math.random() * 14,
+        drift: -24 + Math.random() * 48,
+        rotation: Math.random() * 180,
       })),
     [],
   )
@@ -19,9 +21,10 @@ function GoldParticles() {
       Array.from({ length: 24 }, () => ({
         left: Math.random() * 100,
         top: Math.random() * 100,
-        size: 1 + Math.random() * 2.5,
+        size: 8 + Math.random() * 10,
         duration: 3 + Math.random() * 5,
         delay: Math.random() * 6,
+        rotation: Math.random() * 180,
       })),
     [],
   )
@@ -37,6 +40,7 @@ function GoldParticles() {
             top: `${s.top}%`,
             width: `${s.size}px`,
             height: `${s.size}px`,
+            transform: `rotate(${s.rotation}deg)`,
             animationDuration: `${s.duration}s`,
             animationDelay: `${s.delay}s`,
           }}
@@ -50,6 +54,8 @@ function GoldParticles() {
             left: `${s.left}%`,
             width: `${s.size}px`,
             height: `${s.size}px`,
+            transform: `rotate(${s.rotation}deg)`,
+            '--spark-drift': `${s.drift}px`,
             animationDuration: `${s.duration}s`,
             animationDelay: `${s.delay}s`,
           }}
@@ -60,9 +66,9 @@ function GoldParticles() {
 }
 
 const TRUST = [
-  { icon: Wind,        label: 'Chispa fría · sin calor' },
+  { icon: Wind, label: 'Chispa fria · sin calor' },
   { icon: ShieldCheck, label: 'Sin humo ni llama' },
-  { icon: Boxes,       label: 'Impresa en 3D' },
+  { icon: Boxes, label: 'Impresa en 3D' },
 ]
 
 export default function HeroSection() {
@@ -97,7 +103,6 @@ export default function HeroSection() {
       ref={root}
       className="grain relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-white px-6 pb-16 pt-28 text-center"
     >
-      {/* Resplandor dorado sutil sobre fondo blanco */}
       <div
         className="hero-glow absolute left-1/2 top-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 blur-3xl"
         style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.22) 0%, transparent 68%)' }}
@@ -105,20 +110,26 @@ export default function HeroSection() {
       <GoldParticles />
 
       <div className="relative z-10 flex flex-col items-center">
-        <span className="hero-kicker mb-6 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/8 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.22em] text-primary-dark">
-          <Sparkles className="h-3.5 w-3.5" />
-          Chisperío presenta · Edición Mundial 2026
-        </span>
+        <div className="hero-kicker mb-6 flex flex-col items-center gap-3">
+          <img
+            src="/images/chisperio-logo.png"
+            alt="Chisperio"
+            className="h-auto w-[200px] sm:w-[245px]"
+          />
+          <span className="inline-flex items-center rounded-full border border-primary/40 bg-primary/8 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.22em] text-primary-dark">
+            Edicion Mundial 2026
+          </span>
+        </div>
 
         <h1 className="hero-title max-w-5xl text-[19vw] leading-[0.82] text-bg sm:text-[15vw] md:text-[11rem]">
-          <span className="block">Encendé</span>
+          <span className="block">Encende</span>
           <span className="block text-gradient-gold">la gloria</span>
         </h1>
 
         <div className="hero-sub mt-7 max-w-2xl">
           <p className="text-xl font-medium leading-snug text-bg/80 sm:text-2xl">
-            Una réplica de la <strong className="font-bold text-bg">Copa Mundial 2026</strong> que
-            lanza chispas frías con solo apretar un botón.
+            Una replica exacta de la <strong className="font-bold text-bg">Copa Mundial 2026</strong> que
+            lanza chispas frias con solo apretar un boton.
           </p>
           <p className="mt-3 text-base text-bg/55 sm:text-lg">
             Impresa en 3D. Sin humo. Sin calor.
@@ -137,12 +148,11 @@ export default function HeroSection() {
             href="#como-funciona"
             className="group inline-flex items-center gap-1.5 text-sm font-medium text-bg/60 underline-offset-4 transition-colors duration-300 hover:text-primary-dark hover:underline"
           >
-            Ver cómo funciona
+            Ver como funciona
             <ChevronDown className="h-4 w-4 -rotate-90 transition-transform duration-300 group-hover:translate-x-0.5" />
           </a>
         </div>
 
-        {/* Trust badges */}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
           {TRUST.map((t) => {
             const Icon = t.icon

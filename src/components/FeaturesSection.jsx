@@ -9,22 +9,22 @@ const FEATURES = [
   {
     icon: Boxes,
     title: 'Impresa en 3D',
-    desc: 'Cada Copa se fabrica capa por capa con impresión 3D de alta precisión: una réplica fiel del trofeo, liviana y resistente.',
+    desc: 'Cada Copa se fabrica capa por capa con impresion 3D de alta precision: una replica fiel del trofeo, liviana y resistente.',
   },
   {
     icon: Sparkles,
-    title: 'Chispa fría integrada',
-    desc: 'Aloja un cartucho de cold spark: una fuente de destellos plateados, fría al tacto, sin humo ni llama.',
+    title: 'Chispa fria integrada',
+    desc: 'Aloja un cartucho de cold spark: una fuente de destellos plateados, fria al tacto, sin humo ni llama.',
   },
   {
     icon: CircleDot,
-    title: 'Botón en la base',
-    desc: 'Un único botón en la propia Copa la enciende. Sin cables ni técnicos: la activás vos en segundos.',
+    title: 'Boton en la base',
+    desc: 'Nuestro sistema "puli" un unico boton en la propia Copa la enciende. Sin cables ni tecnicos: la activas vos en segundos.',
   },
   {
     icon: Award,
-    title: 'Edición de lanzamiento',
-    desc: 'Producción numerada por el Mundial 2026. Cada unidad llega con su certificado y estuche de coleccionista.',
+    title: 'Edicion de lanzamiento',
+    desc: 'Produccion numerada por el Mundial 2026. Cada unidad llega con su certificado y estuche de coleccionista.',
   },
 ]
 
@@ -32,32 +32,33 @@ const STEPS = [
   {
     n: '01',
     icon: Package,
-    title: 'Insertá el cartucho',
-    desc: 'Colocá el cartucho de chispa fría en el alojamiento interno de la Copa. Encastra solo.',
+    title: 'Inserta el cartucho',
+    desc: 'Coloca el cartucho de chispa fria en el alojamiento interno de la Copa. Encastra solo.',
   },
   {
     n: '02',
     icon: Hand,
-    title: 'Apretá el botón',
-    desc: 'Presioná el botón de la base. La Copa hace el resto — sin riesgos, sin preparación.',
+    title: 'Apreta el boton',
+    desc: 'Presiona el boton de la base. La Copa hace el resto - sin riesgos, sin preparacion.',
   },
   {
     n: '03',
     icon: Sparkles,
-    title: 'Encendé la gloria',
+    title: 'Encende la gloria',
     desc: 'Una fuente de chispas plateadas brota del trofeo. El momento del festejo es tuyo.',
   },
 ]
 
 const SPECS = [
-  { icon: Ruler,       label: 'Altura de chispa',    value: 'Hasta 2 metros' },
-  { icon: Thermometer, label: 'Temperatura',         value: 'Fría al tacto' },
-  { icon: Boxes,       label: 'Material',            value: 'PLA premium 3D' },
-  { icon: Award,       label: 'Altura de la Copa',   value: '37 cm' },
-  { icon: Clock,       label: 'Duración por cartucho',value: '30 s c/u' },
-  { icon: RefreshCw,   label: 'Cartuchos',           value: 'Reemplazables · 30 s' },
-  { icon: Package,     label: 'Cartuchos de repuesto',value: 'Próximamente' },
-  { icon: CircleDot,   label: 'Activación',          value: 'Botón en la base' },
+  { icon: Ruler, label: 'Altura de chispa', value: 'Hasta 2 metros' },
+  { icon: Thermometer, label: 'Temperatura', value: 'Fria al tacto' },
+  { icon: Boxes, label: 'Material', value: 'Polimero de alta resistencia' },
+  { icon: Award, label: 'Altura de la Copa', value: '27 cm' },
+  { icon: Clock, label: 'Duracion por cartucho', value: '30 s c/u' },
+  { icon: RefreshCw, label: 'Cartuchos', value: 'Reemplazables · 30 s' },
+  { icon: Package, label: 'Cartuchos de repuesto', value: 'Proximamente' },
+  { icon: CircleDot, label: 'Activacion', value: 'Boton en la base' },
+  { icon: Package, label: 'Peso aproximado', value: '400 g (incluyendo bateria)' },
 ]
 
 export default function FeaturesSection() {
@@ -81,7 +82,6 @@ export default function FeaturesSection() {
       ref={root}
       className="grain relative overflow-hidden bg-[#F8F4EC] px-6 py-28 sm:py-36"
     >
-      {/* Destellos de fondo sutiles */}
       <div
         className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full blur-3xl"
         style={{ background: 'rgba(201,168,76,0.12)' }}
@@ -92,23 +92,20 @@ export default function FeaturesSection() {
       />
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-center">
-
-        {/* ── Encabezado ── */}
         <div className="feat-head mx-auto max-w-2xl text-center">
           <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
-            El producto Chisperío
+            El producto Chisperio
           </span>
           <h2 className="mt-4 text-6xl text-bg sm:text-7xl md:text-8xl">
-            Diseñada para{' '}
+            Disenada para{' '}
             <span className="text-gradient-gold">brillar</span>
           </h2>
           <p className="mt-5 text-bg/55">
-            La Copa Mundial 2026 reúne lo que Chisperío sabe hacer mejor: el espectáculo
-            de la chispa fría, ahora en tus manos y en forma del trofeo más codiciado del fútbol.
+            La Copa Mundial 2026 reune lo que Chisperio sabe hacer mejor: el espectaculo
+            de la chispa fria, ahora en tus manos y en forma del trofeo mas codiciado del futbol.
           </p>
         </div>
 
-        {/* ── Grid de características ── */}
         <div className="feat-grid mt-16 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((f, i) => {
             const Icon = f.icon
@@ -128,18 +125,17 @@ export default function FeaturesSection() {
           })}
         </div>
 
-        {/* ── Cómo funciona ── */}
         <div id="como-funciona" className="mt-32 flex w-full scroll-mt-24 flex-col items-center">
           <div className="step-head mx-auto max-w-2xl text-center">
             <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
-              Cómo funciona
+              Como funciona
             </span>
             <h2 className="mt-4 text-5xl text-bg sm:text-6xl md:text-7xl">
               Tres pasos. <span className="text-gradient-gold">Cero complicaciones.</span>
             </h2>
             <p className="mt-5 text-bg/55">
-              No necesitás técnicos ni instalación. La Copa fue pensada para que cualquiera
-              encienda el espectáculo en menos de un minuto.
+              No necesitas tecnicos ni instalacion. La Copa fue pensada para que cualquiera
+              encienda el espectaculo en menos de un minuto.
             </p>
           </div>
 
@@ -165,11 +161,10 @@ export default function FeaturesSection() {
           </div>
         </div>
 
-        {/* ── Ficha técnica ── */}
         <div className="spec-panel mt-24 w-full max-w-4xl rounded-3xl border border-primary/20 bg-white p-8 shadow-sm sm:p-12">
           <div className="text-center">
             <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
-              Ficha técnica
+              Ficha tecnica
             </span>
             <h3 className="mt-3 text-4xl text-bg sm:text-5xl">Cada detalle, medido</h3>
           </div>
@@ -190,7 +185,6 @@ export default function FeaturesSection() {
             })}
           </div>
         </div>
-
       </div>
     </section>
   )
