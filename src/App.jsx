@@ -12,6 +12,9 @@ import FAQSection from './components/FAQSection'
 import PricingSection from './components/PricingSection'
 import CTASection from './components/CTASection'
 import SecurityPage from './components/SecurityPage'
+import GallerySection from './components/GallerySection'
+import Footer from './components/Footer'
+import FloatingWhatsAppButton from './components/FloatingWhatsAppButton'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -54,19 +57,29 @@ export default function App() {
   }, [])
 
   if (isSecurityPage) {
-    return <SecurityPage />
+    return (
+      <>
+        <SecurityPage />
+        <FloatingWhatsAppButton />
+      </>
+    )
   }
 
   return (
-    <main className="bg-white text-bg">
-      <NavBar />
-      <HeroSection />
-      <ScrollVideoSection />
-      <SocialProofSection />
-      <FeaturesSection />
-      <FAQSection />
-      <PricingSection />
-      <CTASection />
-    </main>
+    <>
+      <main className="bg-white text-bg">
+        <NavBar />
+        <HeroSection />
+        <ScrollVideoSection />
+        <SocialProofSection />
+        <FeaturesSection />
+        <FAQSection />
+        <PricingSection />
+        <CTASection />
+        <GallerySection />
+        <Footer />
+      </main>
+      <FloatingWhatsAppButton />
+    </>
   )
 }

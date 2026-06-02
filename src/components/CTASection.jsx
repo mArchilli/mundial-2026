@@ -168,17 +168,6 @@ export default function CTASection() {
         </div>
       </div>
 
-      <footer className="relative mt-24 flex flex-col items-center gap-1 text-xs uppercase tracking-[0.25em] text-bg/30">
-        <img
-          src="/images/chisperio-logo.png"
-          alt="Chisperio"
-          className="h-auto w-[130px] opacity-75"
-        />
-        <span>Copa Mundial 2026 - Encendé la gloria</span>
-        <span className="tracking-[0.15em] text-bg/25">
-          Efectos de chispa fría para eventos
-        </span>
-      </footer>
     </section>
   )
 }
