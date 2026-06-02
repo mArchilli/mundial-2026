@@ -1,0 +1,305 @@
+===============================================================================
+LANDING PAGE — CHISPERIO COPA MUNDIAL 2026
+DOCUMENTO DE ARGUMENTACION DE LA ESTRUCTURA DEL SITIO
+===============================================================================
+
+Fecha: mayo 2026
+Producto: Replica de la Copa del Mundo con fuente de chispa fria integrada
+Precio: US$200 — pre-venta abierta
+Objetivo del sitio: vender un producto nuevo, desconocido, de ticket medio-alto
+
+
+-------------------------------------------------------------------------------
+1. PROPOSITO DE ESTE DOCUMENTO
+-------------------------------------------------------------------------------
+
+Este documento explica POR QUE la landing page esta organizada de la forma en
+que esta. No describe el codigo ni el diseno visual: argumenta las decisiones
+de estructura.
+
+La premisa de partida es importante y condiciona todo lo demas:
+
+  - Se trata del LANZAMIENTO de un producto NUEVO.
+  - El visitante NO conoce el producto ni la marca antes de llegar.
+  - El sitio NO es informativo: su unico objetivo es VENDER.
+  - El ticket es de US$200, un monto que el comprador no gasta por impulso
+    sin antes resolver dudas y desconfianza.
+
+Cuando el objetivo es vender un producto que el visitante recien conoce, la
+landing no puede ser una simple lista de caracteristicas. Tiene que funcionar
+como una conversacion de venta: anticipar las preguntas del visitante y
+responderlas EN EL ORDEN en que se las hace, hasta llevarlo a la compra.
+
+Toda la estructura del sitio esta construida sobre esa idea.
+
+
+-------------------------------------------------------------------------------
+2. EL MODELO MENTAL: UN EMBUDO, NO UN CATALOGO
+-------------------------------------------------------------------------------
+
+Un visitante que llega por primera vez a la pagina pasa, en este orden, por
+cuatro estados mentales antes de comprar:
+
+  1. ATENCION   — "Que es esto? Me interesa?"        -> hay que captarlo rapido
+  2. INTERES    — "Como funciona? Que hace?"          -> hay que explicarlo
+  3. DESEO      — "Lo quiero. Pero... me conviene?"   -> hay que dar confianza
+  4. ACCION     — "Lo compro."                        -> hay que facilitar el pago
+
+Este es el clasico modelo AIDA (Atencion - Interes - Deseo - Accion). La
+landing recorre estos cuatro estados de arriba hacia abajo. Cada seccion
+existe para mover al visitante de un estado al siguiente. Si una seccion no
+empuja al visitante hacia abajo en el embudo, no deberia estar.
+
+El orden de las secciones NO es decorativo: es el guion de la venta.
+
+Orden final del sitio:
+
+  NAVBAR
+  1. HERO                     -> ATENCION
+  2. ANIMACION SCROLL         -> ATENCION + INTERES
+  3. PRUEBA SOCIAL            -> DESEO (confianza)
+  4. CARACTERISTICAS / FICHA  -> INTERES (entender el producto)
+  5. PREGUNTAS FRECUENTES     -> DESEO (eliminar objeciones)
+  6. COMPRA / PARA QUIEN ES   -> DESEO + ACCION
+  7. CIERRE / COUNTDOWN       -> ACCION (urgencia + ultima chance)
+
+A continuacion se argumenta cada parte.
+
+
+-------------------------------------------------------------------------------
+3. ARGUMENTACION SECCION POR SECCION
+-------------------------------------------------------------------------------
+
+........................................................................
+NAVBAR (barra de navegacion fija)
+........................................................................
+
+POR QUE EXISTE:
+El visitante necesita poder comprar en CUALQUIER momento, sin tener que
+buscar como hacerlo. Una persona se puede convencer en el segundo 5 o en el
+segundo 90; el camino a la compra tiene que estar siempre visible.
+
+DECISIONES TOMADAS:
+  - La barra es fija (sticky): acompana al usuario en todo el scroll.
+  - Incluye un boton "Comprar" permanente, separado de los links de
+    navegacion, para que la accion de venta nunca desaparezca de pantalla.
+  - Los links son pocos (El producto / Como funciona / Comprar): en una
+    landing de venta, demasiados links dispersan y compiten con la compra.
+
+
+........................................................................
+SECCION 1 — HERO
+........................................................................
+
+POR QUE EXISTE:
+Es el estado de ATENCION. El visitante decide en pocos segundos si se queda
+o se va. El Hero tiene que responder, de un vistazo, tres preguntas:
+"Que es?", "Para que sirve?" y "Que hago aca?".
+
+DECISIONES TOMADAS:
+  - Titulo grande y emocional ("Encende la gloria"): genera deseo antes de
+    explicar nada. Vende la sensacion, no la ficha tecnica.
+  - Subtitulo descriptivo JERARQUIZADO: se aumento su tamano y se dividio en
+    dos lineas. La primera dice, en concreto, QUE es el producto ("una
+    replica de la Copa Mundial 2026 que lanza chispas frias con un boton").
+    La segunda resume sus atributos clave ("Impresa en 3D. Sin humo. Sin
+    calor."). Esto es critico: un visitante que solo lee el titulo no
+    entiende que esta comprando. La descripcion no puede pasar desapercibida.
+  - UN solo CTA primario destacado ("Comprar ahora - US$200"). El boton
+    secundario ("Ver como funciona") se degrado a un simple link de texto.
+    RAZON: si dos botones tienen el mismo peso visual, el visitante duda cual
+    apretar y muchas veces no aprieta ninguno. En una pagina de venta debe
+    haber una sola accion obvia.
+  - El precio aparece ya en el boton: ocultar el precio genera desconfianza;
+    mostrarlo filtra y compromete al visitante desde el inicio.
+
+
+........................................................................
+SECCION 2 — ANIMACION CONTROLADA POR SCROLL
+........................................................................
+
+POR QUE EXISTE:
+El producto es visual y dificil de imaginar con palabras. "Una copa que tira
+chispas" se entiende de verdad cuando se VE. Esta seccion sostiene la
+ATENCION y la convierte en INTERES, mostrando el producto en accion.
+
+DECISIONES TOMADAS:
+  - La animacion se reproduce con el scroll: el visitante "controla" como se
+    abre el trofeo y como brota la chispa. Esto lo obliga a interactuar y
+    aumenta el tiempo de permanencia, que es uno de los mejores predictores
+    de conversion.
+  - Sobre la animacion aparecen tres mensajes cortos a medida que se avanza:
+    refuerzan el relato emocional sin saturar de texto.
+  - Se agregaron tarjetas laterales con las tres ideas clave del producto.
+    En particular, la tarjeta "Porta chispas" incluye una flecha animada que
+    senala donde va el cartucho. RAZON: si el visitante no entiende el
+    mecanismo, no entiende el producto, y lo que no se entiende no se compra.
+  - Mostrar el producto funcionando ES, en si mismo, una prueba: reduce el
+    miedo a "comprar algo que en la foto se ve lindo pero no se que hace".
+
+
+........................................................................
+SECCION 3 — PRUEBA SOCIAL
+........................................................................
+
+POR QUE EXISTE:
+Este es el punto mas importante del documento. Para un producto NUEVO, de una
+marca que el visitante no conoce, a US$200, la pregunta silenciosa es:
+"Quien mas compro esto? Funciona de verdad? No me estaran estafando?".
+
+Sin prueba social, la pagina es solo la marca hablando bien de si misma. Y
+nadie le cree del todo a un vendedor hablando de su propio producto.
+
+Por eso esta seccion se ubica TEMPRANO, justo despues de ver el producto en
+accion: en el momento exacto en que el visitante empieza a interesarse, se le
+da la confianza para seguir.
+
+DECISIONES TOMADAS:
+  - Testimonios con nombre, rol y ubicacion: el detalle concreto (un bar en
+    Cordoba, una organizadora de eventos en Buenos Aires) hace creible el
+    testimonio. Un testimonio anonimo no convence.
+  - Los testimonios cubren perfiles distintos (un bar, un evento, un regalo
+    personal): asi cada tipo de visitante se ve reflejado en alguno.
+  - Contador de unidades reservadas ("+150 unidades reservadas"): demuestra
+    que otros ya confiaron. Es el efecto "si tantos lo compraron, debe ser
+    bueno" (prueba social por volumen).
+  - La etiqueta "edicion limitada" introduce, de forma temprana y suave, la
+    idea de escasez, que se va a reforzar al final.
+
+
+........................................................................
+SECCION 4 — CARACTERISTICAS, COMO FUNCIONA Y FICHA TECNICA
+........................................................................
+
+POR QUE EXISTE:
+Una vez que el visitante tiene interes y algo de confianza, quiere ENTENDER
+el producto en detalle. Esta seccion cubre el estado de INTERES racional: ya
+no vende sensaciones, da informacion concreta.
+
+DECISIONES TOMADAS:
+  - Caracteristicas en grilla de iconos: lectura rapida, escaneable. El
+    visitante no lee, escanea; el formato lo respeta.
+  - Bloque "Como funciona" en 3 pasos: combate la objecion "parece
+    complicado". Mostrar que se usa en 3 pasos simples reduce la friccion.
+  - Ficha tecnica con datos duros (altura, material, temperatura, duracion).
+    RAZON: el comprador racional necesita numeros para justificar el gasto.
+  - Se agregaron a la ficha los datos de DURACION del cartucho y de
+    REPUESTOS. Esto responde a una duda de compra muy habitual en este tipo
+    de producto: "y cuando se gasta, que hago?". Dejar esa duda sin
+    responder es una fuga de ventas.
+  - Esta seccion va DESPUES de la prueba social a proposito: los datos
+    tecnicos convencen mejor a alguien que ya confia que a alguien que
+    todavia desconfia.
+
+
+........................................................................
+SECCION 5 — PREGUNTAS FRECUENTES (FAQ)
+........................................................................
+
+POR QUE EXISTE:
+Entre "entiendo el producto" y "lo compro" hay una barrera: las OBJECIONES.
+Son las dudas concretas que, sin respuesta, hacen que el visitante cierre la
+pagina. A US$200, toda objecion sin resolver es una venta perdida.
+
+La FAQ se ubica JUSTO ANTES de la seccion de compra: limpia el camino de
+dudas inmediatamente antes de pedir la decision.
+
+DECISIONES TOMADAS:
+  - Las preguntas elegidas son objeciones reales de venta, no curiosidades:
+    seguridad ("es seguro adentro?"), duracion, repuestos, garantia y
+    tiempos de envio. Cada una es un motivo tipico de abandono.
+  - Formato acordeon: mantiene la seccion corta y ordenada; el visitante
+    abre solo lo que le interesa y no se abruma.
+  - La pregunta sobre garantia y la de envios atacan directamente el miedo
+    a "perder la plata": son las que mas pesan en un producto nuevo.
+
+
+........................................................................
+SECCION 6 — COMPRA ("Consegui la tuya") + PARA QUIEN ES
+........................................................................
+
+POR QUE EXISTE:
+Es el momento de la conversion. El visitante ya tiene atencion, interes y
+confianza; aca se le pide la ACCION. Todo lo anterior existio para que esta
+seccion funcione.
+
+DECISIONES TOMADAS:
+  - Bloque "Para que ocasion?" antes de la tarjeta de compra: amplia el
+    universo de compradores. Mucha gente no compra porque no se da cuenta de
+    que el producto es para ella. Al mostrar casos de uso (festejo en casa,
+    regalo, bares, eventos) cada visitante encuentra SU motivo de compra.
+  - Tarjeta de compra clara: producto, que incluye, precio y un unico boton.
+  - Selector de packs (2x20 / 2x30 / 2x40): da sensacion de eleccion y
+    control, sin complicar (el precio no cambia).
+  - Micro-texto explicando el precio unico: como el precio es el mismo en
+    todos los packs, se aclara que "los cartuchos son parte del pack de
+    bienvenida, no un costo extra". RAZON: un precio que el visitante no
+    entiende genera desconfianza; una explicacion clara la elimina.
+  - "Que incluye" detallado: refuerza la sensacion de valor frente al precio.
+  - Sello de edicion limitada / numerada: vuelve a activar la escasez en el
+    momento de decidir.
+
+
+........................................................................
+SECCION 7 — CIERRE: COUNTDOWN + COMPRA + LISTA DE ESPERA
+........................................................................
+
+POR QUE EXISTE:
+Es el ultimo empujon. Para el visitante que llego hasta abajo y todavia no
+compro, esta seccion suma el unico ingrediente que faltaba: URGENCIA.
+
+DECISIONES TOMADAS:
+  - Countdown hasta el inicio del Mundial: conecta el producto con una fecha
+    real e inamovible. Crea urgencia legitima: "si lo queres para el
+    Mundial, el tiempo corre". La urgencia es honesta, no inventada.
+  - El pico emocional del countdown se conecta directamente con la COMPRA.
+    Antes, esta seccion terminaba en un formulario de email; eso desperdiciaba
+    el momento de maxima motivacion. Ahora la accion principal es un boton
+    grande "Comprar ahora", para no perder a quien ya esta decidido.
+  - El formulario de email se mantuvo, pero DEGRADADO a accion secundaria y
+    claramente rotulado como LISTA DE ESPERA ("avisarme si se agota").
+    RAZON: con la venta abierta, un formulario de email ambiguo confunde
+    —el visitante no sabe si esta comprando o solo anotandose—. Separar
+    visualmente "comprar" de "avisarme" elimina esa confusion y, aun asi,
+    captura el contacto de quien hoy no compra.
+
+
+-------------------------------------------------------------------------------
+4. PRINCIPIOS TRANSVERSALES DE LA ESTRUCTURA
+-------------------------------------------------------------------------------
+
+Mas alla de cada seccion, la estructura completa respeta cuatro principios:
+
+  A. UNA SOLA ACCION POR PANTALLA.
+     En cada momento hay un unico CTA dominante: comprar. Todo lo demas es
+     secundario. Multiples acciones con el mismo peso paralizan la decision.
+
+  B. PRIMERO CONFIANZA, DESPUES DATOS, DESPUES PRECIO.
+     La prueba social va antes que la ficha tecnica, y la ficha tecnica antes
+     que el cierre. Se construye credibilidad antes de pedir plata.
+
+  C. CADA SECCION RESPONDE UNA PREGUNTA DEL VISITANTE.
+     Que es / como funciona / quien lo compro / como se usa / y mis dudas /
+     cuanto cuesta / por que ahora. El sitio es el guion de esa conversacion.
+
+  D. SIEMPRE HAY UN CAMINO A LA COMPRA.
+     Navbar fijo, CTA en el Hero, CTA en la seccion de compra y CTA en el
+     cierre. El visitante que se convence en cualquier punto puede comprar
+     sin buscar.
+
+
+-------------------------------------------------------------------------------
+5. CONCLUSION
+-------------------------------------------------------------------------------
+
+La landing no es una suma de secciones lindas: es un recorrido de venta
+disenado para un producto nuevo y desconocido. El orden importa tanto como el
+contenido. Cada seccion existe porque resuelve una etapa concreta del proceso
+de decision del comprador —captar atencion, generar interes, construir
+confianza, eliminar objeciones y, finalmente, pedir la compra con urgencia—.
+
+Quitar una seccion, o cambiarla de lugar, rompe ese recorrido. Por eso la
+estructura es la que es: no por estetica, sino porque es la forma en que un
+visitante que no conocia el producto termina comprandolo.
+
+===============================================================================
