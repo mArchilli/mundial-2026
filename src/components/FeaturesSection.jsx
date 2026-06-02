@@ -50,13 +50,13 @@ const STEPS = [
 ]
 
 const SPECS = [
-  { icon: Ruler, label: 'Altura de chispa', value: 'Hasta 2 metros' },
+  { icon: Ruler, label: 'Altura de chispa', value: 'Desde 2 metros' },
   { icon: Thermometer, label: 'Temperatura', value: 'Fría al tacto' },
   { icon: Boxes, label: 'Material', value: 'Polímero de alta resistencia' },
   { icon: Award, label: 'Altura de la Copa', value: '27 cm' },
-  { icon: Clock, label: 'Duración por cartucho', value: '30 s c/u' },
-  { icon: RefreshCw, label: 'Cartuchos', value: 'Reemplazables · 30 s' },
-  { icon: Package, label: 'Cartuchos de repuesto', value: 'Próximamente' },
+  { icon: Clock, label: 'Duración por cartucho', value: 'Desde 20 s c/u' },
+  { icon: RefreshCw, label: 'Cartuchos', value: 'Reemplazables' },
+  { icon: Package, label: 'Sistema', value: 'Portátil e inalámbrico a batería' },
   { icon: CircleDot, label: 'Activación', value: 'Botón en la base' },
   { icon: Package, label: 'Peso aproximado', value: '400 g (incluyendo batería)' },
 ]
