@@ -32,7 +32,7 @@ export default function NavBar() {
           href="#comprar"
           className="rounded-full bg-gold-gradient px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105 sm:px-6 sm:text-sm"
         >
-          Comprar · US$200
+          Comprar · AR$250.000
         </a>
       </nav>
     </header>

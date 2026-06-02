@@ -141,7 +141,7 @@ export default function HeroSection() {
             href="#comprar"
             className="group relative overflow-hidden rounded-full bg-gold-gradient px-9 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105"
           >
-            <span className="relative z-10">Comprar ahora · US$200</span>
+            <span className="relative z-10">Comprar ahora · AR$250.000</span>
             <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
           </a>
           <a

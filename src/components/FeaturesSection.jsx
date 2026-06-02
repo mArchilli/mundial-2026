@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
-  Boxes, Sparkles, CircleDot, Award,
+  Boxes, Sparkles, CircleDot, Award, ChevronLeft, ChevronRight,
   Ruler, Thermometer, Package, Hand, Clock, RefreshCw,
 } from 'lucide-react'
 import { revealGroups } from '../lib/reveal'
@@ -19,7 +19,7 @@ const FEATURES = [
   {
     icon: CircleDot,
     title: 'Boton en la base',
-    desc: 'Nuestro sistema "puli" un unico boton en la propia Copa la enciende. Sin cables ni tecnicos: la activas vos en segundos.',
+    desc: 'Nuestro sistema "puly" un unico boton en la propia Copa la enciende. Sin cables ni tecnicos: la activas vos en segundos.',
   },
   {
     icon: Award,
@@ -61,8 +61,112 @@ const SPECS = [
   { icon: Package, label: 'Peso aproximado', value: '400 g (incluyendo bateria)' },
 ]
 
+const MOBILE_QUERY = '(max-width: 639px)'
+
+function MobileCarousel({ items, activeIndex, onChange, renderItem, labelPrefix }) {
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
+
+  const showPrev = () => {
+    onChange((activeIndex - 1 + items.length) % items.length)
+  }
+
+  const showNext = () => {
+    onChange((activeIndex + 1) % items.length)
+  }
+
+  const handleTouchStart = (event) => {
+    const { clientX } = event.touches[0]
+    touchStartX.current = clientX
+    touchEndX.current = clientX
+  }
+
+  const handleTouchMove = (event) => {
+    touchEndX.current = event.touches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    const swipeDistance = touchStartX.current - touchEndX.current
+
+    if (Math.abs(swipeDistance) < 50) return
+
+    if (swipeDistance > 0) {
+      showNext()
+      return
+    }
+
+    showPrev()
+  }
+
+  return (
+    <div className="w-full sm:hidden">
+      <div className="relative">
+        <button
+          type="button"
+          onClick={showPrev}
+          aria-label="Ver anterior"
+          className="absolute left-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-primary/30 bg-white/95 text-primary shadow-glow transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white"
+        >
+          <ChevronLeft className="h-5 w-5" strokeWidth={2.5} />
+        </button>
+
+        <button
+          type="button"
+          onClick={showNext}
+          aria-label="Ver siguiente"
+          className="absolute right-2 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-primary/30 bg-white/95 text-primary shadow-glow transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white"
+        >
+          <ChevronRight className="h-5 w-5" strokeWidth={2.5} />
+        </button>
+
+        <div
+          className="overflow-hidden px-10"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          style={{ touchAction: 'pan-y' }}
+        >
+          <div
+            className="flex transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+          >
+            {items.map((item, index) => (
+              <div
+                key={item.n ?? item.title ?? index}
+                className="w-full shrink-0 px-1"
+              >
+                {renderItem(item, index)}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-5 flex items-center justify-center gap-2">
+        {items.map((item, index) => (
+          <button
+            key={item.n ?? item.title ?? index}
+            type="button"
+            onClick={() => onChange(index)}
+            aria-label={`${labelPrefix} ${index + 1}`}
+            aria-pressed={activeIndex === index}
+            className={`h-2.5 rounded-full transition-all duration-300 ${
+              activeIndex === index ? 'w-7 bg-primary' : 'w-2.5 bg-primary/25'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function FeaturesSection() {
   const root = useRef(null)
+  const [activeFeature, setActiveFeature] = useState(0)
+  const [activeStep, setActiveStep] = useState(0)
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(MOBILE_QUERY).matches,
+  )
 
   useEffect(
     () =>
@@ -71,10 +175,38 @@ export default function FeaturesSection() {
         { sel: '.feat-card', stagger: 0.12, watch: '.feat-grid' },
         { sel: '.step-head', y: 36 },
         { sel: '.step-card', stagger: 0.15, watch: '.step-grid' },
+        { sel: '.step-image', y: 36 },
         { sel: '.spec-panel', y: 44 },
       ]),
     [],
   )
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_QUERY)
+    const onChange = (event) => setIsMobile(event.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  useEffect(() => {
+    if (!isMobile) return undefined
+
+    const timeoutId = window.setTimeout(() => {
+      setActiveFeature((current) => (current + 1) % FEATURES.length)
+    }, 3000)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [activeFeature, isMobile])
+
+  useEffect(() => {
+    if (!isMobile) return undefined
+
+    const timeoutId = window.setTimeout(() => {
+      setActiveStep((current) => (current + 1) % STEPS.length)
+    }, 3000)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [activeStep, isMobile])
 
   return (
     <section
@@ -106,7 +238,7 @@ export default function FeaturesSection() {
           </p>
         </div>
 
-        <div className="feat-grid mt-16 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="feat-grid mt-16 hidden w-full grid-cols-2 gap-6 sm:grid lg:grid-cols-4">
           {FEATURES.map((f, i) => {
             const Icon = f.icon
             return (
@@ -125,6 +257,27 @@ export default function FeaturesSection() {
           })}
         </div>
 
+        <div className="mt-16 w-full sm:hidden">
+          <MobileCarousel
+            items={FEATURES}
+            activeIndex={activeFeature}
+            onChange={setActiveFeature}
+            labelPrefix="Ver caracteristica"
+            renderItem={(feature) => {
+              const Icon = feature.icon
+              return (
+                <article className="feat-card group flex min-h-[248px] flex-col items-center overflow-hidden rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm">
+                  <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
+                    <Icon className="h-7 w-7 text-white" strokeWidth={2.2} />
+                  </div>
+                  <h3 className="text-3xl text-bg">{feature.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-bg/55">{feature.desc}</p>
+                </article>
+              )
+            }}
+          />
+        </div>
+
         <div id="como-funciona" className="mt-32 flex w-full scroll-mt-24 flex-col items-center">
           <div className="step-head mx-auto max-w-2xl text-center">
             <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
@@ -139,7 +292,7 @@ export default function FeaturesSection() {
             </p>
           </div>
 
-          <div className="step-grid mt-14 grid w-full max-w-4xl grid-cols-1 gap-6 sm:grid-cols-3">
+          <div className="step-grid mt-14 hidden w-full max-w-4xl grid-cols-3 gap-6 sm:grid">
             {STEPS.map((s) => {
               const Icon = s.icon
               return (
@@ -158,6 +311,38 @@ export default function FeaturesSection() {
                 </div>
               )
             })}
+          </div>
+
+          <div className="mt-14 w-full sm:hidden">
+            <MobileCarousel
+              items={STEPS}
+              activeIndex={activeStep}
+              onChange={setActiveStep}
+              labelPrefix="Ver paso"
+              renderItem={(step) => {
+                const Icon = step.icon
+                return (
+                  <div className="step-card relative flex min-h-[248px] flex-col items-center rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm">
+                    <span className="font-display text-5xl tracking-wide text-primary/25">
+                      {step.n}
+                    </span>
+                    <div className="-mt-3 mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
+                      <Icon className="h-6 w-6 text-white" strokeWidth={2.2} />
+                    </div>
+                    <h3 className="text-2xl text-bg">{step.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-bg/55">{step.desc}</p>
+                  </div>
+                )
+              }}
+            />
+          </div>
+
+          <div className="step-image mt-10 w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
+            <img
+              src="/images/vista-detalle-puly.png"
+              alt="Detalle del sistema puly en la base de la Copa"
+              className="w-full rounded-[2rem] border border-bg/8 bg-white shadow-sm"
+            />
           </div>
         </div>
 
@@ -184,6 +369,16 @@ export default function FeaturesSection() {
               )
             })}
           </div>
+          <p className="mt-10 text-center text-sm text-bg/55">
+            Conoce tambien las medidas de{' '}
+            <a
+              href="./?page=security"
+              className="font-semibold text-primary-dark underline decoration-primary/50 underline-offset-4 transition-colors hover:text-primary"
+            >
+              seguridad
+            </a>
+            .
+          </p>
         </div>
       </div>
     </section>

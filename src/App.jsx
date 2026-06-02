@@ -11,10 +11,15 @@ import FeaturesSection from './components/FeaturesSection'
 import FAQSection from './components/FAQSection'
 import PricingSection from './components/PricingSection'
 import CTASection from './components/CTASection'
+import SecurityPage from './components/SecurityPage'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
+  const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
+  const searchParams = new URLSearchParams(window.location.search)
+  const isSecurityPage = pathname === '/security' || searchParams.get('page') === 'security'
+
   useEffect(() => {
     const lenis = new Lenis({
       lerp: 0.1,          // suavidad del scroll (0 = sin suavizado, 1 = máximo)
@@ -47,6 +52,10 @@ export default function App() {
       lenis.destroy()
     }
   }, [])
+
+  if (isSecurityPage) {
+    return <SecurityPage />
+  }
 
   return (
     <main className="bg-white text-bg">
