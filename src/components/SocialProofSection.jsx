@@ -47,8 +47,6 @@ export default function SocialProofSection() {
       />
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-center">
-
-        {/* Encabezado */}
         <div className="sp-head mx-auto max-w-2xl text-center">
           <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
             Lo que dicen quienes ya la tienen
@@ -58,7 +56,6 @@ export default function SocialProofSection() {
           </h2>
         </div>
 
-        {/* Testimonios */}
         <div className="sp-grid mt-14 grid w-full grid-cols-1 gap-6 md:grid-cols-3">
           {TESTIMONIALS.map((t) => (
             <article
@@ -87,7 +84,6 @@ export default function SocialProofSection() {
           ))}
         </div>
 
-        {/* Contador de unidades reservadas */}
         <div className="sp-units mt-12 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border border-primary/30 bg-primary/8 px-6 py-3 text-center">
           <span className="font-display text-2xl tracking-wide text-gradient-gold">
             +150 unidades reservadas
@@ -96,7 +92,6 @@ export default function SocialProofSection() {
             · Edición limitada del Mundial 2026
           </span>
         </div>
-
       </div>
     </section>
   )

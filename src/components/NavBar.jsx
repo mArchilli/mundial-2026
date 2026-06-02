@@ -1,6 +1,8 @@
+import { WHATSAPP_URL } from '../lib/whatsapp'
+
 const LINKS = [
   { href: '#features', label: 'El producto' },
-  { href: '#como-funciona', label: 'Como funciona' },
+  { href: '#como-funciona', label: 'Cómo funciona' },
   { href: '#comprar', label: 'Comprar' },
 ]
 
@@ -29,7 +31,9 @@ export default function NavBar() {
         </div>
 
         <a
-          href="#comprar"
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noreferrer"
           className="rounded-full bg-gold-gradient px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105 sm:px-6 sm:text-sm"
         >
           Comprar · AR$250.000

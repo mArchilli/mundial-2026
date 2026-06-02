@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ChevronDown, ShieldCheck, Wind, Boxes } from 'lucide-react'
+import { WHATSAPP_URL } from '../lib/whatsapp'
 
 function GoldParticles() {
   const sparks = useMemo(
@@ -66,7 +67,7 @@ function GoldParticles() {
 }
 
 const TRUST = [
-  { icon: Wind, label: 'Chispa fria · sin calor' },
+  { icon: Wind, label: 'Chispa fría · sin calor' },
   { icon: ShieldCheck, label: 'Sin humo ni llama' },
   { icon: Boxes, label: 'Impresa en 3D' },
 ]
@@ -117,19 +118,19 @@ export default function HeroSection() {
             className="h-auto w-[200px] sm:w-[245px]"
           />
           <span className="inline-flex items-center rounded-full border border-primary/40 bg-primary/8 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.22em] text-primary-dark">
-            Edicion Mundial 2026
+            Edición Mundial 2026
           </span>
         </div>
 
         <h1 className="hero-title max-w-5xl text-[19vw] leading-[0.82] text-bg sm:text-[15vw] md:text-[11rem]">
-          <span className="block">Encende</span>
+          <span className="block">Encendé</span>
           <span className="block text-gradient-gold">la gloria</span>
         </h1>
 
         <div className="hero-sub mt-7 max-w-2xl">
           <p className="text-xl font-medium leading-snug text-bg/80 sm:text-2xl">
-            Una replica exacta de la <strong className="font-bold text-bg">Copa Mundial 2026</strong> que
-            lanza chispas frias con solo apretar un boton.
+            Una réplica exacta de la <strong className="font-bold text-bg">Copa Mundial 2026</strong> que
+            lanza chispas frías con solo apretar un botón.
           </p>
           <p className="mt-3 text-base text-bg/55 sm:text-lg">
             Impresa en 3D. Sin humo. Sin calor.
@@ -138,7 +139,9 @@ export default function HeroSection() {
 
         <div className="hero-cta mt-9 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
           <a
-            href="#comprar"
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noreferrer"
             className="group relative overflow-hidden rounded-full bg-gold-gradient px-9 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105"
           >
             <span className="relative z-10">Comprar ahora · AR$250.000</span>
@@ -148,7 +151,7 @@ export default function HeroSection() {
             href="#como-funciona"
             className="group inline-flex items-center gap-1.5 text-sm font-medium text-bg/60 underline-offset-4 transition-colors duration-300 hover:text-primary-dark hover:underline"
           >
-            Ver como funciona
+            Ver cómo funciona
             <ChevronDown className="h-4 w-4 -rotate-90 transition-transform duration-300 group-hover:translate-x-0.5" />
           </a>
         </div>

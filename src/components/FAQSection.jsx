@@ -9,7 +9,7 @@ const FAQS = [
   },
   {
     q: '¿Cuánto dura cada cartucho?',
-    a: 'Cada cartucho dura 30 segundos de espectáculo continuo. El pack de bienvenida incluye 2 cartuchos.',
+    a: 'Cada cartucho dura 30 segundos de espectáculo continuo. El pack de bienvenida incluye 3 cartuchos.',
   },
   {
     q: '¿Dónde consigo más cartuchos?',
@@ -74,7 +74,6 @@ export default function FAQSection() {
       className="grain relative overflow-hidden bg-white px-6 py-28 sm:py-32"
     >
       <div className="relative mx-auto flex max-w-3xl flex-col">
-
         <div className="faq-head mx-auto max-w-2xl text-center">
           <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
             Antes de comprar
@@ -95,7 +94,6 @@ export default function FAQSection() {
             />
           ))}
         </div>
-
       </div>
     </section>
   )
