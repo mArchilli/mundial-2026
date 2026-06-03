@@ -35,7 +35,7 @@ const FEATURES = [
   },
 ]
 
-const FRAME = 1 / 30
+const FRAME = 1 / 24
 const MOBILE_QUERY = '(max-width: 767px)'
 
 function lastWord(text) {
@@ -201,7 +201,7 @@ export default function ScrollVideoSection() {
                 return (
                   <article
                     key={i}
-                    className={`feat-side-${i} relative w-72 max-w-xs rounded-2xl border border-bg/10 bg-white/90 p-5 shadow-lg backdrop-blur-sm`}
+                    className={`feat-side-${i} relative w-72 max-w-xs rounded-2xl border border-bg/10 bg-white p-5 shadow-lg`}
                     style={{ opacity: 0 }}
                   >
                     {feature.pointer && (
