@@ -5,12 +5,7 @@ import {
 } from 'lucide-react'
 import { revealGroups } from '../lib/reveal'
 import { WHATSAPP_URL } from '../lib/whatsapp'
-
-const PACKS = [
-  { id: '3x30', label: '3x30', tag: 'Próximamente', disabled: true },
-  { id: '2x20', label: '2x20', tag: 'Disponible ahora', recommended: true },
-  { id: '4x30', label: '4x30', tag: 'Próximamente', disabled: true },
-]
+import { PACKS, getPackById } from '../lib/pricing'
 
 const OCCASIONS = [
   { icon: Home, text: 'Festejo en casa con amigos el día del partido' },
@@ -19,14 +14,13 @@ const OCCASIONS = [
   { icon: PartyPopper, text: 'Eventos deportivos, cumpleaños y casamientos temáticos' },
 ]
 
-export default function PricingSection() {
+export default function PricingSection({ selectedPackId, onPackChange }) {
   const root = useRef(null)
   const occasionTouchStartX = useRef(0)
   const occasionTouchEndX = useRef(0)
-  const [pack, setPack] = useState('2x20')
   const [mobileOccasionPage, setMobileOccasionPage] = useState(0)
 
-  const selected = PACKS.find((p) => p.id === pack)
+  const selectedPack = getPackById(selectedPackId)
   const occasionPages = [OCCASIONS.slice(0, 2), OCCASIONS.slice(2, 4)]
 
   useEffect(
@@ -48,9 +42,10 @@ export default function PricingSection() {
 
   const includes = [
     { icon: Award, text: 'La Copa Mundial 2026 impresa en 3D, limitada' },
-    { icon: Sparkles, text: '3 cartuchos de chispa fría · 2x20' },
+    { icon: Sparkles, text: `3 cartuchos de chispa fría - ${selectedPack.label}` },
     { icon: CircleDot, text: 'Botón de activación integrado en la base' },
     { icon: BadgeCheck, text: 'Estuche premium' },
+    { icon: Gift, text: 'Llavero + fixture de regalo' },
     { icon: Truck, text: 'Envío incluido a todo el país' },
   ]
 
@@ -100,34 +95,34 @@ export default function PricingSection() {
         <div className="buy-anim text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/8 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-primary-dark">
             <Sparkles className="h-3.5 w-3.5" />
-            Lanzamiento Mundial 2026 · Pre-venta abierta
+            Lanzamiento Mundial 2026 - Pre-venta abierta
           </span>
           <h2 className="mt-5 text-6xl text-bg sm:text-7xl md:text-8xl">
             Conseguí <span className="text-gradient-gold">la tuya</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-bg/55">
-            La Copa más sus cartuchos de chispa fría. Elegí el pack según cuánto
-            quieras que dure el espectáculo. El precio es siempre el mismo.
+            La copa incluye 3 cartuchos de chispas frías. Elegí el pack según cuánto quieras
+            que dure el espectáculo.
           </p>
         </div>
 
         <div className="mt-14 w-full">
           <h3 className="occasion-card text-center font-display text-3xl tracking-wide text-bg sm:text-4xl">
-            ¿Para qué ocasión<span className="text-gradient-gold">?</span>
+            ¿Para qué <span className="text-gradient-gold">ocasión</span>?
           </h3>
 
           <div className="mt-7 hidden grid-cols-1 gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-4">
-            {OCCASIONS.map((o) => {
-              const Icon = o.icon
+            {OCCASIONS.map((occasion) => {
+              const Icon = occasion.icon
               return (
                 <div
-                  key={o.text}
+                  key={occasion.text}
                   className="occasion-card flex flex-col items-center gap-3 rounded-2xl border border-bg/8 bg-white p-5 text-center shadow-sm"
                 >
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
                     <Icon className="h-5 w-5 text-white" strokeWidth={2.2} />
                   </span>
-                  <span className="text-sm leading-relaxed text-bg/65">{o.text}</span>
+                  <span className="text-sm leading-relaxed text-bg/65">{occasion.text}</span>
                 </div>
               )
             })}
@@ -162,22 +157,29 @@ export default function PricingSection() {
               >
                 <div
                   className="flex transition-transform duration-500 ease-out"
-                  style={{ transform: `translateX(-${mobileOccasionPage * 100}%)` }}
+                  style={{
+                    width: `${occasionPages.length * 100}%`,
+                    transform: `translateX(-${(mobileOccasionPage * 100) / occasionPages.length}%)`,
+                  }}
                 >
                   {occasionPages.map((page, pageIndex) => (
-                    <div key={`occasion-page-${pageIndex}`} className="w-full shrink-0 px-1">
+                    <div
+                      key={`occasion-page-${pageIndex}`}
+                      className="shrink-0 px-1"
+                      style={{ width: `${100 / occasionPages.length}%` }}
+                    >
                       <div className="grid grid-cols-1 gap-3">
-                        {page.map((o) => {
-                          const Icon = o.icon
+                        {page.map((occasion) => {
+                          const Icon = occasion.icon
                           return (
                             <div
-                              key={o.text}
+                              key={occasion.text}
                               className="occasion-card flex min-h-[168px] flex-col items-center gap-3 rounded-2xl border border-bg/8 bg-white p-5 text-center shadow-sm"
                             >
                               <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
                                 <Icon className="h-5 w-5 text-white" strokeWidth={2.2} />
                               </span>
-                              <span className="text-sm leading-relaxed text-bg/65">{o.text}</span>
+                              <span className="text-sm leading-relaxed text-bg/65">{occasion.text}</span>
                             </div>
                           )
                         })}
@@ -220,20 +222,25 @@ export default function PricingSection() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {['Chispa fría', 'Sin humo', 'Impresa en 3D', 'Edición limitada'].map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-primary/30 px-3 py-1 text-[11px] uppercase tracking-wider text-primary"
-                >
-                  {t}
-                </span>
-              ))}
+            <div className="overflow-hidden rounded-[1.75rem] border border-primary/20 bg-[#F8F4EC]">
+              <div className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark sm:border-b sm:border-primary/15 sm:bg-white/70 sm:text-xs">
+                Llavero incluido + fixture incluido
+              </div>
+              <img
+                src="/images/llavero-copa.png"
+                alt="Llavero con forma de Copa Mundial 2026"
+                className="hidden h-[220px] w-full object-cover sm:block"
+              />
+              <img
+                src="/images/llavero-mobile.png"
+                alt="Llavero con forma de Copa Mundial 2026"
+                className="h-[220px] w-full object-cover sm:hidden"
+              />
             </div>
 
             <div className="flex flex-col items-start gap-1 sm:flex-row sm:items-end sm:gap-3">
               <span className="font-display text-5xl leading-none text-gradient-gold sm:text-8xl">
-                AR$250.000
+                {selectedPack.priceText}
               </span>
               <span className="text-xs uppercase tracking-wider text-text/45 sm:pb-2">
                 Pago único<br />Envío incluido
@@ -247,55 +254,44 @@ export default function PricingSection() {
                 Elegí tu pack de chispas
               </span>
               <div className="mt-3 grid grid-cols-3 gap-2">
-                {PACKS.map((p) => {
-                  const active = p.id === pack
+                {PACKS.map((pack) => {
+                  const active = pack.id === selectedPack.id
+
                   return (
                     <button
-                      key={p.id}
+                      key={pack.id}
                       type="button"
-                      onClick={() => {
-                        if (!p.disabled) setPack(p.id)
-                      }}
-                      disabled={p.disabled}
+                      onClick={() => onPackChange(pack.id)}
                       className={`relative flex min-h-[92px] flex-col items-center justify-center rounded-xl border px-1.5 py-3 text-center transition-all duration-200 ${
                         active
                           ? 'border-primary bg-primary/10 shadow-glow'
-                          : p.disabled
-                            ? 'cursor-not-allowed border-bg/10 bg-[#F8F4EC] opacity-75'
-                            : 'border-bg/12 bg-white hover:border-primary/40'
+                          : 'border-bg/12 bg-white hover:border-primary/40'
                       }`}
                     >
-                      {p.recommended && (
+                      {pack.recommended && (
                         <span className="absolute -top-2 rounded-full bg-gold-gradient px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-white">
                           Popular
                         </span>
                       )}
-                      {p.disabled && (
-                        <span className="absolute -top-2 rounded-full border border-primary/20 bg-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-primary-dark">
-                          Próximamente
-                        </span>
-                      )}
                       <span className="font-display text-[1.65rem] leading-none tracking-wide text-bg sm:text-3xl">
-                        {p.label}
+                        {pack.label}
                       </span>
-                      <span className={`mt-1 text-[9px] uppercase leading-tight tracking-wide ${
-                        p.disabled ? 'text-bg/35' : 'text-bg/45'
-                      }`}>
-                        {p.tag}
+                      <span className="mt-1 text-[9px] uppercase leading-tight tracking-wide text-bg/45">
+                        {pack.tag}
                       </span>
                     </button>
                   )
                 })}
               </div>
               <p className="mt-2.5 text-xs leading-relaxed text-bg/50">
-                Pack <strong className="text-bg/70">{selected.label}</strong>: incluye 3 cartuchos
-                de chispa fría 2x20.
+                Pack <strong className="text-bg/70">{selectedPack.label}</strong>: incluye 3 cartuchos
+                de chispa fría {selectedPack.label}.
               </p>
               <p className="mt-2 flex items-start gap-1.5 rounded-lg bg-primary/8 px-3 py-2 text-xs text-bg/55">
                 <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary-dark" strokeWidth={2.2} />
                 <span>
-                  La Copa tiene precio fijo. Los cartuchos son parte del pack de bienvenida,
-                  no un costo adicional.
+                  El valor cambia según el pack seleccionado. Los 3 cartuchos ya están
+                  incluidos en el precio final.
                 </span>
               </p>
             </div>
@@ -326,7 +322,7 @@ export default function PricingSection() {
               className="group relative block overflow-hidden rounded-full bg-gold-gradient px-5 py-4 text-center text-sm font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105 sm:px-7"
             >
               <span className="relative z-10">
-                Comprar la Copa {selected.label} · AR$250.000
+                Comprar la Copa {selectedPack.label} - {selectedPack.priceText}
               </span>
               <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
             </a>

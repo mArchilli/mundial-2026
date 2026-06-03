@@ -1,117 +1,23 @@
-import { useEffect, useMemo, useRef } from 'react'
-import { gsap } from 'gsap'
 import { ChevronDown, ShieldCheck, Wind, Boxes } from 'lucide-react'
 import { WHATSAPP_URL } from '../lib/whatsapp'
-
-function GoldParticles() {
-  const sparks = useMemo(
-    () =>
-      Array.from({ length: 16 }, () => ({
-        left: Math.random() * 100,
-        size: 14 + Math.random() * 16,
-        duration: 8 + Math.random() * 10,
-        delay: Math.random() * 14,
-        drift: -24 + Math.random() * 48,
-        rotation: Math.random() * 180,
-      })),
-    [],
-  )
-
-  const stars = useMemo(
-    () =>
-      Array.from({ length: 24 }, () => ({
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        size: 8 + Math.random() * 10,
-        duration: 3 + Math.random() * 5,
-        delay: Math.random() * 6,
-        rotation: Math.random() * 180,
-      })),
-    [],
-  )
-
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {stars.map((s, i) => (
-        <span
-          key={`star-${i}`}
-          className="twinkle"
-          style={{
-            left: `${s.left}%`,
-            top: `${s.top}%`,
-            width: `${s.size}px`,
-            height: `${s.size}px`,
-            transform: `rotate(${s.rotation}deg)`,
-            animationDuration: `${s.duration}s`,
-            animationDelay: `${s.delay}s`,
-          }}
-        />
-      ))}
-      {sparks.map((s, i) => (
-        <span
-          key={`spark-${i}`}
-          className="spark"
-          style={{
-            left: `${s.left}%`,
-            width: `${s.size}px`,
-            height: `${s.size}px`,
-            transform: `rotate(${s.rotation}deg)`,
-            '--spark-drift': `${s.drift}px`,
-            animationDuration: `${s.duration}s`,
-            animationDelay: `${s.delay}s`,
-          }}
-        />
-      ))}
-    </div>
-  )
-}
+import { getPackById } from '../lib/pricing'
 
 const TRUST = [
-  { icon: Wind, label: 'Chispa fría · sin calor' },
+  { icon: Wind, label: 'Chispa fría - sin calor' },
   { icon: ShieldCheck, label: 'Sin humo ni llama' },
   { icon: Boxes, label: 'Impresa en 3D' },
 ]
 
-export default function HeroSection() {
-  const root = useRef(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.from('.hero-kicker', { y: 24, opacity: 0, duration: 0.7 })
-        .from('.hero-title', { y: 60, opacity: 0, duration: 1 }, '-=0.35')
-        .from('.hero-sub', { y: 30, opacity: 0, duration: 0.8 }, '-=0.55')
-        .from('.hero-cta', { y: 24, opacity: 0, duration: 0.7 }, '-=0.4')
-        .from('.hero-trust', { y: 20, opacity: 0, duration: 0.7, stagger: 0.1 }, '-=0.4')
-        .from('.hero-scroll', { opacity: 0, duration: 0.8 }, '-=0.2')
-
-      gsap.to('.hero-glow', {
-        scale: 1.12,
-        opacity: 0.7,
-        duration: 4.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      })
-    }, root)
-
-    return () => ctx.revert()
-  }, [])
+export default function HeroSection({ selectedPackId }) {
+  const selectedPack = getPackById(selectedPackId)
 
   return (
     <section
       id="top"
-      ref={root}
       className="grain relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-white px-6 pb-16 pt-28 text-center"
     >
-      <div
-        className="hero-glow absolute left-1/2 top-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 blur-3xl"
-        style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.22) 0%, transparent 68%)' }}
-      />
-      <GoldParticles />
-
       <div className="relative z-10 flex flex-col items-center">
-        <div className="hero-kicker mb-6 flex flex-col items-center gap-3">
+        <div className="mb-6 flex flex-col items-center gap-3">
           <img
             src="/images/chisperio-logo.png"
             alt="Chisperio"
@@ -122,50 +28,47 @@ export default function HeroSection() {
           </span>
         </div>
 
-        <h1 className="hero-title max-w-5xl text-[19vw] leading-[0.82] text-bg sm:text-[15vw] md:text-[11rem]">
+        <h1 className="max-w-5xl text-[19vw] leading-[0.82] text-bg sm:text-[15vw] md:text-[11rem]">
           <span className="block">Encendé</span>
           <span className="block text-gradient-gold">la gloria</span>
         </h1>
 
-        <div className="hero-sub mt-7 max-w-2xl">
+        <div className="mt-7 max-w-2xl">
           <p className="text-xl font-medium leading-snug text-bg/80 sm:text-2xl">
-            Una réplica exacta de la <strong className="font-bold text-bg">Copa Mundial 2026</strong> que
-            lanza chispas frías con solo apretar un botón.
-          </p>
-          <p className="mt-3 text-base text-bg/55 sm:text-lg">
-            Impresa en 3D. Sin humo. Sin calor.
+            Una réplica inspirada en la máxima gloria, la{' '}
+            <strong className="font-bold text-bg">Copa Mundial 2026</strong> que lanza chispas
+            frías con solo apretar un botón.
           </p>
         </div>
 
-        <div className="hero-cta mt-9 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+        <div className="mt-9 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noreferrer"
-            className="group relative overflow-hidden rounded-full bg-gold-gradient px-9 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105"
+            className="rounded-full bg-gold-gradient px-9 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-glow"
           >
-            <span className="relative z-10">Comprar ahora · AR$250.000</span>
-            <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
+            Comprar ahora - {selectedPack.priceText}
           </a>
           <a
             href="#como-funciona"
-            className="group inline-flex items-center gap-1.5 text-sm font-medium text-bg/60 underline-offset-4 transition-colors duration-300 hover:text-primary-dark hover:underline"
+            className="inline-flex items-center gap-1.5 rounded-full border border-primary/50 px-8 py-4 text-sm font-bold uppercase tracking-wider text-primary shadow-glow"
           >
             Ver cómo funciona
-            <ChevronDown className="h-4 w-4 -rotate-90 transition-transform duration-300 group-hover:translate-x-0.5" />
+            <ChevronDown className="h-4 w-4 -rotate-90" />
           </a>
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
-          {TRUST.map((t) => {
-            const Icon = t.icon
+          {TRUST.map((item) => {
+            const Icon = item.icon
             return (
               <span
-                key={t.label}
-                className="hero-trust flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-bg/45"
+                key={item.label}
+                className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-bg/45"
               >
                 <Icon className="h-4 w-4 text-primary" strokeWidth={2.2} />
-                {t.label}
+                {item.label}
               </span>
             )
           })}
@@ -174,10 +77,10 @@ export default function HeroSection() {
 
       <a
         href="#scroll-video"
-        className="hero-scroll absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-primary/60 transition-colors hover:text-primary"
+        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-primary/60 hover:text-primary"
         aria-label="Bajar"
       >
-        <ChevronDown className="h-8 w-8 animate-bounce" />
+        <ChevronDown className="h-8 w-8" />
       </a>
     </section>
   )

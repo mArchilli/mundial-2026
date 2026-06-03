@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -15,6 +15,7 @@ import SecurityPage from './components/SecurityPage'
 import GallerySection from './components/GallerySection'
 import Footer from './components/Footer'
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton'
+import { DEFAULT_PACK_ID } from './lib/pricing'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -22,28 +23,21 @@ export default function App() {
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
   const searchParams = new URLSearchParams(window.location.search)
   const isSecurityPage = pathname === '/security' || searchParams.get('page') === 'security'
+  const [selectedPackId, setSelectedPackId] = useState(DEFAULT_PACK_ID)
 
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.1,          // suavidad del scroll (0 = sin suavizado, 1 = máximo)
+      lerp: 0.1,
       smoothWheel: true,
     })
 
-    // Conectar Lenis con ScrollTrigger: cada frame de Lenis actualiza ST
     const onScroll = () => ScrollTrigger.update()
     lenis.on('scroll', onScroll)
 
-    // Lenis corre dentro del ticker de GSAP para estar sincronizados
     const lenisRaf = (time) => lenis.raf(time * 1000)
     gsap.ticker.add(lenisRaf)
     gsap.ticker.lagSmoothing(0)
 
-    /*
-     * Las fuentes de Google (Bebas Neue es enorme) cargan async y reescalan
-     * el layout DESPUÉS de crearse los ScrollTrigger. Sin recalcular, los
-     * reveals quedan con posiciones viejas y nunca disparan → contenido
-     * atascado en opacity:0. Refrescamos al terminar de cargar fuentes/assets.
-     */
     const refresh = () => ScrollTrigger.refresh()
     if (document.fonts?.ready) document.fonts.ready.then(refresh)
     window.addEventListener('load', refresh)
@@ -68,13 +62,13 @@ export default function App() {
   return (
     <>
       <main className="bg-white text-bg">
-        <NavBar />
-        <HeroSection />
+        <NavBar selectedPackId={selectedPackId} />
+        <HeroSection selectedPackId={selectedPackId} />
         <ScrollVideoSection />
         <SocialProofSection />
         <FeaturesSection />
         <FAQSection />
-        <PricingSection />
+        <PricingSection selectedPackId={selectedPackId} onPackChange={setSelectedPackId} />
         <CTASection />
         <GallerySection />
         <Footer />

@@ -24,7 +24,7 @@ const FEATURES = [
   },
   {
     icon: Sparkles,
-    title: 'Porta chispas',
+    title: 'Cartucho PULY®',
     desc: 'Aloja un cartucho de chispa fría en su interior. Se encastra solo desde arriba, sin herramientas.',
     pointer: true,
   },
@@ -170,11 +170,7 @@ export default function ScrollVideoSection() {
           muted
           playsInline
           preload="auto"
-          className={
-            isMobile
-              ? 'block h-screen w-full object-cover'
-              : 'block h-auto w-full'
-          }
+          className={isMobile ? 'block h-screen w-full object-cover' : 'block h-auto w-full'}
           style={{
             mixBlendMode: 'multiply',
             willChange: 'transform',
@@ -183,15 +179,16 @@ export default function ScrollVideoSection() {
         />
 
         {isMobile ? (
-          CAPTIONS_MOBILE.map((c, i) => {
-            const { head, tail } = lastWord(c)
+          CAPTIONS_MOBILE.map((caption, i) => {
+            const { head, tail } = lastWord(caption)
             return (
               <p
                 key={i}
                 className={`mcap-${i} pointer-events-none absolute inset-x-0 bottom-[11vh] z-20 px-6 text-center font-display text-[2.6rem] uppercase leading-[0.95] tracking-wide text-bg`}
                 style={{ opacity: 0 }}
               >
-                {head}{head && ' '}
+                {head}
+                {head && ' '}
                 <span className="text-gradient-gold">{tail}</span>
               </p>
             )
@@ -199,15 +196,15 @@ export default function ScrollVideoSection() {
         ) : (
           <>
             <div className="pointer-events-none absolute left-8 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-4 lg:left-16">
-              {FEATURES.map((f, i) => {
-                const Icon = f.icon
+              {FEATURES.map((feature, i) => {
+                const Icon = feature.icon
                 return (
                   <article
                     key={i}
                     className={`feat-side-${i} relative w-72 max-w-xs rounded-2xl border border-bg/10 bg-white/90 p-5 shadow-lg backdrop-blur-sm`}
                     style={{ opacity: 0 }}
                   >
-                    {f.pointer && (
+                    {feature.pointer && (
                       <span className="cartridge-pointer pointer-events-none absolute right-0 top-1/2 flex translate-x-full -translate-y-1/2 items-center pl-2">
                         <span className="h-px w-8 bg-gradient-to-r from-primary to-primary/0" />
                         <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gold-gradient shadow-glow">
@@ -224,10 +221,10 @@ export default function ScrollVideoSection() {
                       </span>
                     </div>
                     <h3 className="mt-3 font-display text-3xl tracking-wide text-bg">
-                      {f.title}
+                      {feature.title}
                     </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-bg/55">{f.desc}</p>
-                    {f.pointer && (
+                    <p className="mt-1.5 text-sm leading-relaxed text-bg/55">{feature.desc}</p>
+                    {feature.pointer && (
                       <span className="mt-2 inline-block text-[11px] font-medium uppercase tracking-[0.12em] text-primary-dark">
                         El cartucho va dentro de la Copa
                       </span>
@@ -237,8 +234,8 @@ export default function ScrollVideoSection() {
               })}
             </div>
 
-            {CAPTIONS.map((c, i) => {
-              const { head, tail } = lastWord(c)
+            {CAPTIONS.map((caption, i) => {
+              const { head, tail } = lastWord(caption)
               return (
                 <p
                   key={i}

@@ -19,7 +19,7 @@ const FEATURES = [
   {
     icon: CircleDot,
     title: 'Botón en la base',
-    desc: 'Nuestro sistema "puly": un único botón en la propia Copa la enciende. Sin cables ni técnicos: la activás vos en segundos.',
+    desc: 'Nuestro sistema "PULY": un único botón en la propia Copa la enciende. Sin cables ni técnicos: la activás vos en segundos.',
   },
   {
     icon: Award,
@@ -52,9 +52,9 @@ const STEPS = [
 const SPECS = [
   { icon: Ruler, label: 'Altura de chispa', value: 'Desde 2 metros' },
   { icon: Thermometer, label: 'Temperatura', value: 'Fría al tacto' },
-  { icon: Boxes, label: 'Material', value: 'Polímero de alta resistencia' },
+  { icon: Boxes, label: 'Material', value: 'PLA alta resistencia' },
   { icon: Award, label: 'Altura de la Copa', value: '27 cm' },
-  { icon: Clock, label: 'Duración por cartucho', value: 'Desde 20 s c/u' },
+  { icon: Clock, label: 'Duración por cartucho', value: 'Desde 20seg c/u' },
   { icon: RefreshCw, label: 'Cartuchos', value: 'Reemplazables' },
   { icon: Package, label: 'Sistema', value: 'Portátil e inalámbrico a batería' },
   { icon: CircleDot, label: 'Activación', value: 'Botón en la base' },
@@ -128,12 +128,16 @@ function MobileCarousel({ items, activeIndex, onChange, renderItem, labelPrefix 
         >
           <div
             className="flex transition-transform duration-500 ease-out"
-            style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+            style={{
+              width: `${items.length * 100}%`,
+              transform: `translateX(-${(activeIndex * 100) / items.length}%)`,
+            }}
           >
             {items.map((item, index) => (
               <div
                 key={item.n ?? item.title ?? index}
-                className="w-full shrink-0 px-1"
+                className="shrink-0 px-1"
+                style={{ width: `${100 / items.length}%` }}
               >
                 {renderItem(item, index)}
               </div>
@@ -225,12 +229,8 @@ export default function FeaturesSection() {
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-center">
         <div className="feat-head mx-auto max-w-2xl text-center">
-          <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
-            El producto Chisperio
-          </span>
           <h2 className="mt-4 text-6xl text-bg sm:text-7xl md:text-8xl">
-            Diseñada para{' '}
-            <span className="text-gradient-gold">brillar</span>
+            Diseñada para <span className="text-gradient-gold">brillar</span>
           </h2>
           <p className="mt-5 text-bg/55">
             La Copa Mundial 2026 reúne lo que Chisperio sabe hacer mejor: el espectáculo
@@ -239,8 +239,8 @@ export default function FeaturesSection() {
         </div>
 
         <div className="feat-grid mt-16 hidden w-full grid-cols-2 gap-6 sm:grid lg:grid-cols-4">
-          {FEATURES.map((f, i) => {
-            const Icon = f.icon
+          {FEATURES.map((feature, i) => {
+            const Icon = feature.icon
             return (
               <article
                 key={i}
@@ -250,8 +250,8 @@ export default function FeaturesSection() {
                 <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
                   <Icon className="h-7 w-7 text-white" strokeWidth={2.2} />
                 </div>
-                <h3 className="text-3xl text-bg">{f.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-bg/55">{f.desc}</p>
+                <h3 className="text-3xl text-bg">{feature.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-bg/55">{feature.desc}</p>
               </article>
             )
           })}
@@ -266,7 +266,7 @@ export default function FeaturesSection() {
             renderItem={(feature) => {
               const Icon = feature.icon
               return (
-                <article className="feat-card group flex min-h-[248px] flex-col items-center overflow-hidden rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm">
+                <article className="group flex min-h-[248px] flex-col items-center overflow-hidden rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm">
                   <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
                     <Icon className="h-7 w-7 text-white" strokeWidth={2.2} />
                   </div>
@@ -288,26 +288,26 @@ export default function FeaturesSection() {
             </h2>
             <p className="mt-5 text-bg/55">
               No necesitás técnicos ni instalación. La Copa fue pensada para que cualquiera
-              encienda el espectáculo en menos de un minuto.
+              encienda el espectáculo en segundos.
             </p>
           </div>
 
           <div className="step-grid mt-14 hidden w-full max-w-4xl grid-cols-3 gap-6 sm:grid">
-            {STEPS.map((s) => {
-              const Icon = s.icon
+            {STEPS.map((step) => {
+              const Icon = step.icon
               return (
                 <div
-                  key={s.n}
+                  key={step.n}
                   className="step-card relative flex flex-col items-center rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm"
                 >
                   <span className="font-display text-5xl tracking-wide text-primary/25">
-                    {s.n}
+                    {step.n}
                   </span>
                   <div className="-mt-3 mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
                     <Icon className="h-6 w-6 text-white" strokeWidth={2.2} />
                   </div>
-                  <h3 className="text-2xl text-bg">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-bg/55">{s.desc}</p>
+                  <h3 className="text-2xl text-bg">{step.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-bg/55">{step.desc}</p>
                 </div>
               )
             })}
@@ -322,7 +322,7 @@ export default function FeaturesSection() {
               renderItem={(step) => {
                 const Icon = step.icon
                 return (
-                  <div className="step-card relative flex min-h-[248px] flex-col items-center rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm">
+                  <div className="relative flex min-h-[248px] flex-col items-center rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm">
                     <span className="font-display text-5xl tracking-wide text-primary/25">
                       {step.n}
                     </span>
@@ -340,11 +340,11 @@ export default function FeaturesSection() {
           <div className="step-image mt-10 w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
             <img
               src="/images/vista-detalle-puly.png"
-              alt="Detalle del sistema puly en la base de la Copa"
+              alt="Detalle del sistema PULY en la base de la Copa"
               className="w-full rounded-[2rem] border border-bg/8 bg-white shadow-sm"
             />
             <p className="mt-4 text-center text-sm text-bg/55">
-              Tan fácil como apretar un botón, gracias a nuestro sistema puly®
+              Nuestro sistema PULY®, se activa únicamente con un botón.
             </p>
           </div>
         </div>
@@ -357,16 +357,21 @@ export default function FeaturesSection() {
             <h3 className="mt-3 text-4xl text-bg sm:text-5xl">Cada detalle, medido</h3>
           </div>
           <div className="mt-9 grid grid-cols-2 gap-x-6 gap-y-7 sm:grid-cols-3">
-            {SPECS.map((sp) => {
-              const Icon = sp.icon
+            {SPECS.map((spec, index) => {
+              const Icon = spec.icon
               return (
-                <div key={sp.label} className="flex flex-col items-center text-center">
+                <div
+                  key={spec.label}
+                  className={`flex flex-col items-center text-center ${
+                    index === SPECS.length - 1 ? 'col-span-2 sm:col-span-1' : ''
+                  }`}
+                >
                   <Icon className="h-6 w-6 text-primary" strokeWidth={2} />
                   <span className="mt-2 text-[11px] uppercase tracking-[0.16em] text-bg/40">
-                    {sp.label}
+                    {spec.label}
                   </span>
                   <span className="mt-0.5 font-display text-2xl tracking-wide text-bg">
-                    {sp.value}
+                    {spec.value}
                   </span>
                 </div>
               )

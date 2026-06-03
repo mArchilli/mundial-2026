@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { ImageOff } from 'lucide-react'
+import {
+  ImageOff, X, ZoomIn, ZoomOut, RotateCcw, ChevronLeft, ChevronRight,
+} from 'lucide-react'
 import { revealGroups } from '../lib/reveal'
 
 const GALLERY_ITEMS = [
@@ -16,7 +18,7 @@ const GALLERY_ITEMS = [
   {
     name: 'Cataratas',
     src: '/images/copa-cataratas.png',
-    alt: 'La Copa Chisperio en las Cataratas del Iguazu',
+    alt: 'La Copa Chisperio en las Cataratas del Iguazú',
   },
   {
     name: 'Puerto Madero',
@@ -41,12 +43,42 @@ const GALLERY_ITEMS = [
   },
 ]
 
-function GalleryCard({ item, broken, onError }) {
+const MIN_ZOOM = 1
+const MAX_ZOOM = 4
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max)
+}
+
+function getOffsetBounds(stageRect, zoom) {
+  if (!stageRect || zoom <= 1) return { x: 0, y: 0 }
+
+  return {
+    x: ((zoom - 1) * stageRect.width) / 2,
+    y: ((zoom - 1) * stageRect.height) / 2,
+  }
+}
+
+function GalleryCard({ item, broken, onError, onOpen }) {
+  const isInteractive = !broken
+
+  const handleKeyDown = (event) => {
+    if (!isInteractive) return
+    if (event.key !== 'Enter' && event.key !== ' ') return
+    event.preventDefault()
+    onOpen()
+  }
+
   return (
     <article
       className={`gallery-card group relative overflow-hidden rounded-[28px] border border-primary/15 bg-[#F8F4EC] shadow-[0_30px_80px_rgba(10,10,10,0.08)] ${
         item.banner ? 'sm:col-span-2 lg:col-span-3' : ''
-      }`}
+      } ${isInteractive ? 'cursor-zoom-in' : ''}`}
+      onClick={isInteractive ? onOpen : undefined}
+      onKeyDown={handleKeyDown}
+      role={isInteractive ? 'button' : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+      aria-label={isInteractive ? `Abrir imagen ${item.name}` : undefined}
     >
       {broken ? (
         <div
@@ -84,9 +116,232 @@ function GalleryCard({ item, broken, onError }) {
   )
 }
 
+function GalleryPreview({ items, activeIndex, onClose, onPrev, onNext }) {
+  const item = items[activeIndex]
+  const stageRef = useRef(null)
+  const dragRef = useRef(null)
+  const [zoom, setZoom] = useState(1)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    setZoom(1)
+    setOffset({ x: 0, y: 0 })
+  }, [activeIndex])
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') onClose()
+      if (event.key === 'ArrowLeft') onPrev()
+      if (event.key === 'ArrowRight') onNext()
+      if (event.key === '+' || event.key === '=') setZoom((current) => clamp(current + 0.5, MIN_ZOOM, MAX_ZOOM))
+      if (event.key === '-') setZoom((current) => clamp(current - 0.5, MIN_ZOOM, MAX_ZOOM))
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [onClose, onNext, onPrev])
+
+  const updateZoom = (nextZoom) => {
+    const stageRect = stageRef.current?.getBoundingClientRect()
+    const clampedZoom = clamp(nextZoom, MIN_ZOOM, MAX_ZOOM)
+    const bounds = getOffsetBounds(stageRect, clampedZoom)
+
+    setZoom(clampedZoom)
+    setOffset((current) => ({
+      x: clamp(current.x, -bounds.x, bounds.x),
+      y: clamp(current.y, -bounds.y, bounds.y),
+    }))
+  }
+
+  const handleWheel = (event) => {
+    event.preventDefault()
+    updateZoom(zoom + (event.deltaY < 0 ? 0.35 : -0.35))
+  }
+
+  const handlePointerDown = (event) => {
+    if (zoom <= 1) return
+
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      offsetX: offset.x,
+      offsetY: offset.y,
+    }
+
+    event.currentTarget.setPointerCapture(event.pointerId)
+  }
+
+  const handlePointerMove = (event) => {
+    if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return
+
+    const stageRect = stageRef.current?.getBoundingClientRect()
+    const bounds = getOffsetBounds(stageRect, zoom)
+    const nextX = dragRef.current.offsetX + (event.clientX - dragRef.current.startX)
+    const nextY = dragRef.current.offsetY + (event.clientY - dragRef.current.startY)
+
+    setOffset({
+      x: clamp(nextX, -bounds.x, bounds.x),
+      y: clamp(nextY, -bounds.y, bounds.y),
+    })
+  }
+
+  const handlePointerUp = (event) => {
+    if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return
+    dragRef.current = null
+    event.currentTarget.releasePointerCapture(event.pointerId)
+  }
+
+  const handleDoubleClick = () => {
+    if (zoom > 1) {
+      setZoom(1)
+      setOffset({ x: 0, y: 0 })
+      return
+    }
+
+    setZoom(2.2)
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-[90] flex items-center justify-center bg-black/70 px-3 py-4 backdrop-blur-md sm:px-6"
+      onClick={onClose}
+      aria-modal="true"
+      role="dialog"
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute right-4 top-4 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
+        aria-label="Cerrar previsualización"
+      >
+        <X className="h-5 w-5" />
+      </button>
+
+      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3 py-2 text-white backdrop-blur">
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation()
+            updateZoom(zoom - 0.5)
+          }}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+          aria-label="Alejar imagen"
+        >
+          <ZoomOut className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation()
+            setZoom(1)
+            setOffset({ x: 0, y: 0 })
+          }}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+          aria-label="Restablecer zoom"
+        >
+          <RotateCcw className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation()
+            updateZoom(zoom + 0.5)
+          }}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+          aria-label="Acercar imagen"
+        >
+          <ZoomIn className="h-4 w-4" />
+        </button>
+        <span className="min-w-[3.5rem] text-center text-sm font-medium">{zoom.toFixed(1)}x</span>
+      </div>
+
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation()
+          onPrev()
+        }}
+        className="absolute left-3 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20 sm:inline-flex"
+        aria-label="Imagen anterior"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation()
+          onNext()
+        }}
+        className="absolute right-3 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20 sm:inline-flex"
+        aria-label="Imagen siguiente"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+
+      <div
+        className="relative flex h-full w-full max-w-6xl flex-col items-center justify-center gap-4"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div
+          ref={stageRef}
+          className="relative flex h-full max-h-[82vh] w-full items-center justify-center overflow-hidden rounded-[28px] bg-[#0d0d11]"
+          onWheel={handleWheel}
+          onDoubleClick={handleDoubleClick}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          style={{ touchAction: zoom > 1 ? 'none' : 'pan-y' }}
+        >
+          <img
+            src={item.src}
+            alt={item.alt}
+            className={`max-h-full max-w-full object-contain select-none ${
+              zoom > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'
+            }`}
+            draggable="false"
+            style={{
+              transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+              transition: dragRef.current ? 'none' : 'transform 180ms ease-out',
+            }}
+          />
+        </div>
+
+        <div className="flex items-center gap-3 text-center text-white">
+          <button
+            type="button"
+            onClick={onPrev}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 sm:hidden"
+            aria-label="Imagen anterior"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <div>
+            <p className="font-display text-3xl tracking-wide sm:text-4xl">{item.name}</p>
+            <p className="mt-1 text-sm text-white/70">
+              Tocá o hacé doble click para alternar el zoom. Arrastrá la imagen cuando esté ampliada.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onNext}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 sm:hidden"
+            aria-label="Imagen siguiente"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function GallerySection() {
   const root = useRef(null)
   const [brokenImages, setBrokenImages] = useState({})
+  const [activeIndex, setActiveIndex] = useState(null)
 
   useEffect(
     () =>
@@ -97,41 +352,88 @@ export default function GallerySection() {
     [],
   )
 
+  useEffect(() => {
+    if (activeIndex === null) return undefined
+
+    const previousHtmlOverflow = document.documentElement.style.overflow
+    const previousOverflow = document.body.style.overflow
+    const previousOverscroll = document.body.style.overscrollBehavior
+
+    document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
+    document.body.style.overscrollBehavior = 'contain'
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow
+      document.body.style.overflow = previousOverflow
+      document.body.style.overscrollBehavior = previousOverscroll
+    }
+  }, [activeIndex])
+
   const handleError = (src) => {
     setBrokenImages((current) => (current[src] ? current : { ...current, [src]: true }))
   }
 
+  const openPreview = (index) => {
+    setActiveIndex(index)
+  }
+
+  const closePreview = () => {
+    setActiveIndex(null)
+  }
+
+  const showPrev = () => {
+    setActiveIndex((current) => (current === null ? current : (current - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length))
+  }
+
+  const showNext = () => {
+    setActiveIndex((current) => (current === null ? current : (current + 1) % GALLERY_ITEMS.length))
+  }
+
   return (
-    <section
-      ref={root}
-      className="grain relative overflow-hidden bg-white px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
-    >
-      <div
-        className="pointer-events-none absolute left-1/2 top-24 h-[78vmin] w-[78vmin] -translate-x-1/2 rounded-full blur-3xl"
-        style={{ background: 'rgba(201,168,76,0.12)' }}
-      />
+    <>
+      <section
+        ref={root}
+        className="grain relative overflow-hidden bg-white px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
+      >
+        <div
+          className="pointer-events-none absolute left-1/2 top-24 h-[78vmin] w-[78vmin] -translate-x-1/2 rounded-full blur-3xl"
+          style={{ background: 'rgba(201,168,76,0.12)' }}
+        />
 
-      <div className="relative mx-auto max-w-[92rem]">
-        <div className="gallery-head mx-auto max-w-3xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.34em] text-primary">
-            GALERÍA
-          </span>
-          <h2 className="mt-5 text-5xl leading-[0.95] text-bg sm:text-6xl md:text-7xl">
-            La Copa que está dando vueltas por toda Argentina
-          </h2>
-        </div>
+        <div className="relative mx-auto max-w-[92rem]">
+          <div className="gallery-head mx-auto max-w-3xl text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.34em] text-primary">
+              GALERÍA
+            </span>
+            <h2 className="mt-5 text-5xl leading-[0.95] text-bg sm:text-6xl md:text-7xl">
+              La Copa que está dando vueltas por toda Argentina
+            </h2>
+          </div>
 
-        <div className="gallery-grid mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {GALLERY_ITEMS.map((item) => (
-            <GalleryCard
-              key={item.src}
-              item={item}
-              broken={Boolean(brokenImages[item.src])}
-              onError={() => handleError(item.src)}
-            />
-          ))}
+          <div className="gallery-grid mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {GALLERY_ITEMS.map((item, index) => (
+              <GalleryCard
+                key={item.src}
+                item={item}
+                broken={Boolean(brokenImages[item.src])}
+                onError={() => handleError(item.src)}
+                onOpen={() => openPreview(index)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {activeIndex !== null && (
+        <GalleryPreview
+          items={GALLERY_ITEMS}
+          activeIndex={activeIndex}
+          onClose={closePreview}
+          onPrev={showPrev}
+          onNext={showNext}
+        />
+      )}
+    </>
   )
 }

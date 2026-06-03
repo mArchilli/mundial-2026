@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Plus } from 'lucide-react'
 import { revealGroups } from '../lib/reveal'
+import { WHATSAPP_URL } from '../lib/whatsapp'
 
 const FAQS = [
   {
@@ -9,15 +10,37 @@ const FAQS = [
   },
   {
     q: '¿Cuánto dura cada cartucho?',
-    a: 'Cada cartucho dura 30 segundos de espectáculo continuo. El pack de bienvenida incluye 3 cartuchos.',
+    a: 'Depende del cartucho que elijas. Por defecto vienen con 3 cartuchos de 2 metros de chispa por 20 segundos. También está la opción de cartuchos de 3 metros por 30 segundos y 4 metros por 30 segundos.',
   },
   {
     q: '¿Dónde consigo más cartuchos?',
-    a: 'Los cartuchos de repuesto se conseguirán directamente en nuestra tienda. Estarán disponibles próximamente.',
+    a: (
+      <>
+        Los cartuchos de repuesto se conseguirán directamente en nuestra tienda:{' '}
+        <a
+          href="https://chisperio.com.ar"
+          target="_blank"
+          rel="noreferrer"
+          className="font-semibold text-primary-dark underline decoration-primary/50 underline-offset-4"
+        >
+          chisperio.com.ar
+        </a>{' '}
+        o escribinos a{' '}
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="font-semibold text-primary-dark underline decoration-primary/50 underline-offset-4"
+        >
+          WhatsApp
+        </a>{' '}
+        para adquirir más.
+      </>
+    ),
   },
   {
     q: '¿Tiene garantía?',
-    a: 'Sí, la Copa incluye 6 meses de garantía por defectos de fabricación.',
+    a: 'Sí, la Copa incluye 3 meses de garantía solo por defectos de fabricación.',
   },
   {
     q: '¿En cuánto tiempo recibo el pedido?',
@@ -84,11 +107,11 @@ export default function FAQSection() {
         </div>
 
         <div className="faq-list mt-12 flex flex-col gap-3">
-          {FAQS.map((f, i) => (
+          {FAQS.map((faq, i) => (
             <FaqItem
-              key={f.q}
-              q={f.q}
-              a={f.a}
+              key={faq.q}
+              q={faq.q}
+              a={faq.a}
               open={openIdx === i}
               onToggle={() => setOpenIdx(openIdx === i ? -1 : i)}
             />

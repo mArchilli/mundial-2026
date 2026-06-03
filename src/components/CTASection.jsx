@@ -70,7 +70,7 @@ export default function CTASection() {
 
         <h2 className="cta-anim mt-5 text-6xl leading-[0.9] text-bg sm:text-7xl md:text-8xl">
           El mundo entero lo estará viendo.{' '}
-          <span className="text-gradient-gold">¿Vas a ser parte?</span>
+          <span className="text-gradient-gold">ENCENDÉ LA GLORIA</span>
         </h2>
 
         <div className="cta-anim mt-12 flex justify-center gap-3 sm:gap-5">
@@ -109,11 +109,11 @@ export default function CTASection() {
             rel="noreferrer"
             className="group relative overflow-hidden rounded-full bg-gold-gradient px-12 py-5 text-base font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105"
           >
-            <span className="relative z-10">Comprar ahora · AR$250.000</span>
+            <span className="relative z-10">COMPRAR AHORA</span>
             <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
           </a>
           <p className="mt-3 text-xs uppercase tracking-[0.18em] text-bg/40">
-            Pre-venta abierta · Envío incluido
+            Pre-venta abierta - Envío incluido
           </p>
         </div>
 
@@ -167,7 +167,6 @@ export default function CTASection() {
           )}
         </div>
       </div>
-
     </section>
   )
 }

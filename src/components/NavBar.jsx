@@ -1,4 +1,5 @@
 import { WHATSAPP_URL } from '../lib/whatsapp'
+import { getPackById } from '../lib/pricing'
 
 const LINKS = [
   { href: '#features', label: 'El producto' },
@@ -6,7 +7,9 @@ const LINKS = [
   { href: '#comprar', label: 'Comprar' },
 ]
 
-export default function NavBar() {
+export default function NavBar({ selectedPackId }) {
+  const selectedPack = getPackById(selectedPackId)
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-bg/8 bg-white/80 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
@@ -19,13 +22,13 @@ export default function NavBar() {
         </a>
 
         <div className="hidden items-center gap-8 md:flex">
-          {LINKS.map((l) => (
+          {LINKS.map((link) => (
             <a
-              key={l.href}
-              href={l.href}
+              key={link.href}
+              href={link.href}
               className="text-sm font-medium text-bg/60 transition-colors hover:text-primary-dark"
             >
-              {l.label}
+              {link.label}
             </a>
           ))}
         </div>
@@ -36,7 +39,7 @@ export default function NavBar() {
           rel="noreferrer"
           className="rounded-full bg-gold-gradient px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105 sm:px-6 sm:text-sm"
         >
-          Comprar · AR$250.000
+          Comprar · {selectedPack.priceText}
         </a>
       </nav>
     </header>

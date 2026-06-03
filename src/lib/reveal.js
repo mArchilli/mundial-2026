@@ -20,13 +20,22 @@ export function revealGroups(rootEl, groups) {
   if (!rootEl) return () => {}
   const observers = []
 
+  const isVisibleTarget = (el) => {
+    if (!el) return false
+
+    const style = window.getComputedStyle(el)
+    return style.display !== 'none' && style.visibility !== 'hidden' && el.getClientRects().length > 0
+  }
+
   groups.forEach(({ sel, stagger = 0, watch, y = 48 }) => {
     const els = gsap.utils.toArray(rootEl.querySelectorAll(sel))
     if (!els.length) return
 
     gsap.set(els, { opacity: 0, y })
 
-    const target = watch ? rootEl.querySelector(watch) : els[0]
+    const fallbackTarget = els.find((el) => isVisibleTarget(el)) ?? els[0]
+    const watchedTarget = watch ? rootEl.querySelector(watch) : null
+    const target = isVisibleTarget(watchedTarget) ? watchedTarget : fallbackTarget
     const show = () =>
       gsap.to(els, {
         opacity: 1,

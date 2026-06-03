@@ -37,10 +37,7 @@ export default function SocialProofSection() {
   )
 
   return (
-    <section
-      ref={root}
-      className="grain relative overflow-hidden bg-white px-6 py-28 sm:py-32"
-    >
+    <section ref={root} className="grain relative overflow-hidden bg-white px-6 py-28 sm:py-32">
       <div
         className="pointer-events-none absolute left-1/2 top-0 h-[70vmin] w-[70vmin] -translate-x-1/2 rounded-full blur-3xl"
         style={{ background: 'rgba(201,168,76,0.1)' }}
@@ -52,14 +49,14 @@ export default function SocialProofSection() {
             Lo que dicen quienes ya la tienen
           </span>
           <h2 className="mt-4 text-6xl text-bg sm:text-7xl">
-            Festejaron con <span className="text-gradient-gold">gloria</span>
+            Quienes encendieron la <span className="text-gradient-gold">gloria</span>
           </h2>
         </div>
 
         <div className="sp-grid mt-14 grid w-full grid-cols-1 gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((t) => (
+          {TESTIMONIALS.map((testimonial) => (
             <article
-              key={t.name}
+              key={testimonial.name}
               className="sp-card relative flex flex-col rounded-2xl border border-bg/8 bg-white p-7 shadow-sm"
             >
               <Quote className="h-7 w-7 text-primary/30" strokeWidth={2.2} />
@@ -69,15 +66,15 @@ export default function SocialProofSection() {
                 ))}
               </div>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-bg/70">
-                “{t.text}”
+                “{testimonial.text}”
               </p>
               <div className="mt-6 flex items-center gap-3">
                 <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-gradient font-display text-lg tracking-wide text-white shadow-glow">
-                  {t.initials}
+                  {testimonial.initials}
                 </span>
                 <span className="flex flex-col">
-                  <span className="text-sm font-bold text-bg">{t.name}</span>
-                  <span className="text-xs text-bg/45">{t.role}</span>
+                  <span className="text-sm font-bold text-bg">{testimonial.name}</span>
+                  <span className="text-xs text-bg/45">{testimonial.role}</span>
                 </span>
               </div>
             </article>

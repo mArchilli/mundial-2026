@@ -7,13 +7,13 @@ import { revealGroups } from '../lib/reveal'
 const MEASURES = [
   {
     icon: TriangleAlert,
-    title: 'No apuntar hacia la cara',
-    desc: 'Manten siempre la Copa orientada lejos del rostro durante el encendido y uso.',
+    title: 'No apuntar hacia la cara ni a otras personas',
+    desc: 'Mantené siempre la Copa orientada lejos del rostro durante el encendido y uso.',
   },
   {
     icon: Hand,
     title: 'Distancia de un brazo',
-    desc: 'Al sostenerla mientras se usa, deja una separacion equivalente al largo de un brazo.',
+    desc: 'Al sostenerla mientras se usa, dejá una separación equivalente al largo de un brazo.',
   },
   {
     icon: Wind,
@@ -22,18 +22,18 @@ const MEASURES = [
   },
   {
     icon: Baby,
-    title: 'Lejos de ninos y mascotas',
-    desc: 'No la acerques a ninos, bebes ni mascotas mientras este activa o caliente por uso reciente.',
+    title: 'Lejos de niños y mascotas',
+    desc: 'No la acerques a niños, bebés ni mascotas mientras esté activa.',
   },
   {
     icon: ShieldCheck,
     title: 'No apuntar a porcelanato',
-    desc: 'Evita dirigir las chispas hacia pisos o superficies de porcelanato para prevenir marcas o daos.',
+    desc: 'Evitá dirigir las chispas hacia pisos o superficies de porcelanato para prevenir marcas o daños.',
   },
   {
     icon: Sparkles,
-    title: 'No dejar cerca de telas',
-    desc: 'Manten una distancia prudente respecto de cortinas, manteles, sillones y otras telas.',
+    title: 'No acercar a telas ni materiales inflamables',
+    desc: 'Mantené una distancia prudente respecto de cortinas, manteles, sillones y otros materiales inflamables.',
   },
 ]
 
@@ -95,8 +95,8 @@ export default function SecurityPage() {
               Medidas de <span className="text-gradient-gold">seguridad</span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-bg/60 sm:text-lg">
-              La Copa esta pensada para deslumbrar, pero tambien para usarse con criterio.
-              Segui estas recomendaciones antes de encender el efecto de chispa fria.
+              La Copa está pensada para deslumbrar, pero también para usarse con criterio.
+              Seguí estas recomendaciones antes de encender la gloria.
             </p>
           </div>
 
@@ -123,8 +123,8 @@ export default function SecurityPage() {
               Importante
             </span>
             <p className="mt-4 text-lg leading-relaxed text-bg/70 sm:text-xl">
-              Antes de cada uso, verifica el entorno y asegurate de que haya espacio suficiente
-              para sostener la Copa con comodidad, lejos de personas vulnerables y materiales delicados.
+              Antes de cada uso, verificá el entorno y asegurate de que haya espacio suficiente
+              para encender la Copa con comodidad, lejos de personas y materiales delicados.
             </p>
           </div>
         </div>
