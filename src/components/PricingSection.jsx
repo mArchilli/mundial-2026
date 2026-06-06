@@ -40,7 +40,7 @@ export default function PricingSection({ selectedPackId, onPackChange, onOpenPur
   }, [mobileOccasionPage, occasionPages.length])
 
   const includes = [
-    { icon: Award, text: 'La Copa Mundial 2026 impresa en 3D, limitada' },
+    { icon: Award, text: 'La Copa Mundial 2026, impresa en 3D y limitada' },
     { icon: Sparkles, text: `3 cartuchos de chispa fría - ${selectedPack.label}` },
     { icon: CircleDot, text: 'Botón de activación integrado en la base' },
     { icon: BadgeCheck, text: 'Estuche premium' },
@@ -223,7 +223,7 @@ export default function PricingSection({ selectedPackId, onPackChange, onOpenPur
 
             <div className="overflow-hidden rounded-[1.75rem] border border-primary/20 bg-[#F8F4EC]">
               <div className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark sm:border-b sm:border-primary/15 sm:bg-white/70 sm:text-xs">
-                Llavero incluido + fixture incluido
+                Llavero + fixture incluido
               </div>
               <img
                 src="/images/llavero-copa.png"

@@ -141,6 +141,24 @@ function GalleryPreview({ items, activeIndex, onClose, onPrev, onNext }) {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [onClose, onNext, onPrev])
 
+  useEffect(() => {
+    const preventScroll = (event) => event.preventDefault()
+    const preventScrollKeys = (event) => {
+      const blockedKeys = [' ', 'PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown']
+      if (blockedKeys.includes(event.key)) event.preventDefault()
+    }
+
+    window.addEventListener('wheel', preventScroll, { passive: false })
+    window.addEventListener('touchmove', preventScroll, { passive: false })
+    window.addEventListener('keydown', preventScrollKeys, { passive: false })
+
+    return () => {
+      window.removeEventListener('wheel', preventScroll)
+      window.removeEventListener('touchmove', preventScroll)
+      window.removeEventListener('keydown', preventScrollKeys)
+    }
+  }, [])
+
   const updateZoom = (nextZoom) => {
     const stageRect = stageRef.current?.getBoundingClientRect()
     const clampedZoom = clamp(nextZoom, MIN_ZOOM, MAX_ZOOM)
@@ -204,10 +222,11 @@ function GalleryPreview({ items, activeIndex, onClose, onPrev, onNext }) {
 
   return (
     <div
-      className="fixed inset-0 z-[90] flex items-center justify-center bg-black/70 px-3 py-4 backdrop-blur-md sm:px-6"
+      className="fixed inset-0 z-[90] flex items-center justify-center overflow-hidden bg-black/70 px-3 py-4 backdrop-blur-md sm:px-6"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
+      style={{ overscrollBehavior: 'contain' }}
     >
       <button
         type="button"
@@ -217,44 +236,6 @@ function GalleryPreview({ items, activeIndex, onClose, onPrev, onNext }) {
       >
         <X className="h-5 w-5" />
       </button>
-
-      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3 py-2 text-white backdrop-blur">
-        <button
-          type="button"
-          onClick={(event) => {
-            event.stopPropagation()
-            updateZoom(zoom - 0.5)
-          }}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
-          aria-label="Alejar imagen"
-        >
-          <ZoomOut className="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          onClick={(event) => {
-            event.stopPropagation()
-            setZoom(1)
-            setOffset({ x: 0, y: 0 })
-          }}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
-          aria-label="Restablecer zoom"
-        >
-          <RotateCcw className="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          onClick={(event) => {
-            event.stopPropagation()
-            updateZoom(zoom + 0.5)
-          }}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
-          aria-label="Acercar imagen"
-        >
-          <ZoomIn className="h-4 w-4" />
-        </button>
-        <span className="min-w-[3.5rem] text-center text-sm font-medium">{zoom.toFixed(1)}x</span>
-      </div>
 
       <button
         type="button"
@@ -281,19 +262,19 @@ function GalleryPreview({ items, activeIndex, onClose, onPrev, onNext }) {
       </button>
 
       <div
-        className="relative flex h-full w-full max-w-6xl flex-col items-center justify-center gap-4"
+        className="relative flex h-full w-full max-w-6xl flex-col items-center justify-center gap-4 overflow-hidden"
         onClick={(event) => event.stopPropagation()}
       >
         <div
           ref={stageRef}
-          className="relative flex h-full max-h-[82vh] w-full items-center justify-center overflow-hidden rounded-[28px] bg-[#0d0d11]"
+          className="relative flex h-full max-h-[72vh] w-full items-center justify-center overflow-hidden rounded-[28px] bg-[#0d0d11]"
           onWheel={handleWheel}
           onDoubleClick={handleDoubleClick}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
-          style={{ touchAction: zoom > 1 ? 'none' : 'pan-y' }}
+          style={{ touchAction: zoom > 1 ? 'none' : 'manipulation' }}
         >
           <img
             src={item.src}
@@ -307,6 +288,44 @@ function GalleryPreview({ items, activeIndex, onClose, onPrev, onNext }) {
               transition: dragRef.current ? 'none' : 'transform 180ms ease-out',
             }}
           />
+        </div>
+
+        <div className="flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3 py-2 text-white backdrop-blur">
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation()
+              updateZoom(zoom - 0.5)
+            }}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+            aria-label="Alejar imagen"
+          >
+            <ZoomOut className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation()
+              setZoom(1)
+              setOffset({ x: 0, y: 0 })
+            }}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+            aria-label="Restablecer zoom"
+          >
+            <RotateCcw className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation()
+              updateZoom(zoom + 0.5)
+            }}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+            aria-label="Acercar imagen"
+          >
+            <ZoomIn className="h-4 w-4" />
+          </button>
+          <span className="min-w-[3.5rem] text-center text-sm font-medium">{zoom.toFixed(1)}x</span>
         </div>
 
         <div className="flex items-center gap-3 text-center text-white">
@@ -355,18 +374,41 @@ export default function GallerySection() {
   useEffect(() => {
     if (activeIndex === null) return undefined
 
+    const scrollY = window.scrollY
     const previousHtmlOverflow = document.documentElement.style.overflow
+    const previousHtmlHeight = document.documentElement.style.height
     const previousOverflow = document.body.style.overflow
     const previousOverscroll = document.body.style.overscrollBehavior
+    const previousBodyPosition = document.body.style.position
+    const previousBodyTop = document.body.style.top
+    const previousBodyWidth = document.body.style.width
+    const previousBodyHeight = document.body.style.height
+    const previousHtmlTouchAction = document.documentElement.style.touchAction
+    const previousBodyTouchAction = document.body.style.touchAction
 
     document.documentElement.style.overflow = 'hidden'
+    document.documentElement.style.height = '100%'
+    document.documentElement.style.touchAction = 'none'
     document.body.style.overflow = 'hidden'
     document.body.style.overscrollBehavior = 'contain'
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
+    document.body.style.height = '100%'
+    document.body.style.touchAction = 'none'
 
     return () => {
       document.documentElement.style.overflow = previousHtmlOverflow
+      document.documentElement.style.height = previousHtmlHeight
+      document.documentElement.style.touchAction = previousHtmlTouchAction
       document.body.style.overflow = previousOverflow
       document.body.style.overscrollBehavior = previousOverscroll
+      document.body.style.position = previousBodyPosition
+      document.body.style.top = previousBodyTop
+      document.body.style.width = previousBodyWidth
+      document.body.style.height = previousBodyHeight
+      document.body.style.touchAction = previousBodyTouchAction
+      window.scrollTo(0, scrollY)
     }
   }, [activeIndex])
 

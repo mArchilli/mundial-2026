@@ -226,7 +226,7 @@ export default function ScrollVideoSection() {
                     <p className="mt-1.5 text-sm leading-relaxed text-bg/55">{feature.desc}</p>
                     {feature.pointer && (
                       <span className="mt-2 inline-block text-[11px] font-medium uppercase tracking-[0.12em] text-primary-dark">
-                        El cartucho va dentro de la Copa
+                        El cartucho va dentro de la Copa.
                       </span>
                     )}
                   </article>

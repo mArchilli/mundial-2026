@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Plus } from 'lucide-react'
 import { revealGroups } from '../lib/reveal'
 import { WHATSAPP_URL } from '../lib/whatsapp'
@@ -10,7 +10,7 @@ const FAQS = [
   },
   {
     q: '¿Cuánto dura cada cartucho?',
-    a: 'Depende del cartucho que elijas. Por defecto vienen con 3 cartuchos de 2 metros de chispa por 20 segundos. También está la opción de cartuchos de 3 metros por 30 segundos y 4 metros por 30 segundos.',
+    a: 'Depende del cartucho que elijas. Por defecto, vienen con 3 cartuchos de 2 metros de chispa por 20 segundos. También está la opción de cartuchos de 3 metros por 30 segundos y 4 metros por 30 segundos.',
   },
   {
     q: '¿Dónde consigo más cartuchos?',
@@ -49,6 +49,30 @@ const FAQS = [
 ]
 
 function FaqItem({ q, a, open, onToggle }) {
+  const contentRef = useRef(null)
+  const [contentHeight, setContentHeight] = useState(0)
+
+  useLayoutEffect(() => {
+    if (!open || !contentRef.current) return undefined
+
+    const element = contentRef.current
+    const updateHeight = () => {
+      setContentHeight(element.scrollHeight)
+    }
+
+    updateHeight()
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateHeight)
+      return () => window.removeEventListener('resize', updateHeight)
+    }
+
+    const observer = new ResizeObserver(() => updateHeight())
+    observer.observe(element)
+
+    return () => observer.disconnect()
+  }, [open, a])
+
   return (
     <div className="faq-item overflow-hidden rounded-2xl border border-bg/8 bg-white shadow-sm">
       <button
@@ -66,11 +90,16 @@ function FaqItem({ q, a, open, onToggle }) {
         />
       </button>
       <div
-        className="grid transition-all duration-300 ease-out"
-        style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
+        className="overflow-hidden transition-[height] duration-300 ease-out will-change-[height]"
+        style={{ height: open ? `${contentHeight}px` : '0px' }}
       >
-        <div className="overflow-hidden">
-          <p className="px-6 pb-5 text-sm leading-relaxed text-bg/60">{a}</p>
+        <div
+          ref={contentRef}
+          className={`px-6 pb-5 transition-[opacity,transform] duration-300 ease-out ${
+            open ? 'translate-y-0 opacity-100' : '-translate-y-1 opacity-0'
+          }`}
+        >
+          <p className="text-sm leading-relaxed text-bg/60">{a}</p>
         </div>
       </div>
     </div>

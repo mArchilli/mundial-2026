@@ -2,7 +2,7 @@ import { ChevronDown, ShieldCheck, Wind, Boxes } from 'lucide-react'
 import { getPackById } from '../lib/pricing'
 
 const TRUST = [
-  { icon: Wind, label: 'Chispa fría - sin calor' },
+  { icon: Wind, label: 'Chispa fría, sin calor' },
   { icon: ShieldCheck, label: 'Sin humo ni llama' },
   { icon: Boxes, label: 'Impresa en 3D' },
 ]
@@ -49,7 +49,7 @@ export default function HeroSection({ selectedPackId, onOpenPurchaseModal }) {
             Comprar ahora - {selectedPack.priceText}
           </button>
           <a
-            href="#como-funciona"
+            href="#scroll-video"
             className="inline-flex items-center gap-1.5 rounded-full border border-primary/50 px-8 py-4 text-sm font-bold uppercase tracking-wider text-primary shadow-glow"
           >
             Ver cómo funciona

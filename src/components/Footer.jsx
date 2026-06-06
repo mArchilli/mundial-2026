@@ -34,6 +34,17 @@ export default function Footer() {
           <Instagram className="h-5 w-5" strokeWidth={2.2} />
         </a>
       </div>
+      <p className="mt-2 text-[10px] tracking-[0.2em] text-bg/35">
+        Powered by{' '}
+        <a
+          href="https://archillimatias.dev/"
+          target="_blank"
+          rel="noreferrer"
+          className="font-semibold text-primary transition-colors duration-300 hover:text-primary-dark"
+        >
+          PAMPA LABS
+        </a>
+      </p>
     </footer>
   )
 }

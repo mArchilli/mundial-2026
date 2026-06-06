@@ -2,7 +2,7 @@ import { getPackById } from '../lib/pricing'
 
 const LINKS = [
   { href: '#features', label: 'El producto' },
-  { href: '#como-funciona', label: 'Como funciona' },
+  { href: '#como-funciona', label: 'Cómo funciona' },
   { href: '#comprar', label: 'Comprar' },
 ]
 

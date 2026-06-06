@@ -44,8 +44,8 @@ export default function CTASection({ onOpenPurchaseModal }) {
   const units = [
     ['Días', time.dias],
     ['Horas', time.horas],
-    ['Min', time.minutos],
-    ['Seg', time.segundos],
+    ['Min.', time.minutos],
+    ['Seg.', time.segundos],
   ]
 
   return (
@@ -89,7 +89,7 @@ export default function CTASection({ onOpenPurchaseModal }) {
         </div>
 
         <p className="cta-anim mt-6 text-sm text-bg/45">
-          Hasta el inicio del FIFA World Cup 2026 - 11 de junio de 2026
+          Hasta el inicio del FIFA World Cup 2026, el 11 de junio de 2026.
         </p>
 
         <div className="cta-anim mt-10 flex flex-col items-center">
@@ -111,7 +111,7 @@ export default function CTASection({ onOpenPurchaseModal }) {
             <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
           </button>
           <p className="mt-3 text-xs uppercase tracking-[0.18em] text-bg/40">
-            Pre-venta abierta - Envío incluido
+            Pre-venta abierta. Envío incluido.
           </p>
         </div>
 

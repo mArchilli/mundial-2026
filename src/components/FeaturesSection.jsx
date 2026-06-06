@@ -1,7 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import {
-  Boxes, Sparkles, CircleDot, Award, ChevronLeft, ChevronRight,
-  Ruler, Thermometer, Package, Hand, Clock, RefreshCw,
+  Boxes,
+  Sparkles,
+  CircleDot,
+  Award,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  Ruler,
+  Thermometer,
+  Package,
+  Clock,
+  RefreshCw,
 } from 'lucide-react'
 import { revealGroups } from '../lib/reveal'
 
@@ -19,7 +32,7 @@ const FEATURES = [
   {
     icon: CircleDot,
     title: 'Botón en la base',
-    desc: 'Nuestro sistema "PULY": un único botón en la propia Copa la enciende. Sin cables ni técnicos: la activás vos en segundos.',
+    desc: 'Nuestro sistema PULY®: un único botón en la propia Copa la enciende. Sin cables ni técnicos, la activás vos en segundos.',
   },
   {
     icon: Award,
@@ -28,25 +41,16 @@ const FEATURES = [
   },
 ]
 
-const STEPS = [
-  {
-    n: '01',
-    icon: Package,
-    title: 'Insertá el cartucho',
-    desc: 'Colocá el cartucho de chispa fría en el alojamiento interno de la Copa. Encastra solo.',
-  },
-  {
-    n: '02',
-    icon: Hand,
-    title: 'Apretá el botón',
-    desc: 'Presioná el botón de la base. La Copa hace el resto: sin riesgos, sin preparación.',
-  },
-  {
-    n: '03',
-    icon: Sparkles,
-    title: 'Encendé la gloria',
-    desc: 'Una fuente de chispas plateadas brota del trofeo. El momento del festejo es tuyo.',
-  },
+const PULY_IMAGES = [
+  { src: '/images/puly-1.png', alt: 'Vista 1 del sistema PULY de la Copa' },
+  { src: '/images/puly-2.png', alt: 'Vista 2 del sistema PULY de la Copa' },
+  { src: '/images/puly-3.png', alt: 'Vista 3 del sistema PULY de la Copa' },
+  { src: '/images/puly-4.png', alt: 'Vista 4 del sistema PULY de la Copa' },
+]
+
+const ESTUCHE_IMAGES = [
+  { name: 'Estuche 1', src: '/images/estuche-1.png', alt: 'Vista 1 del estuche premium de la Copa' },
+  { name: 'Estuche 2', src: '/images/estuche-2.png', alt: 'Vista 2 del estuche premium de la Copa' },
 ]
 
 const SPECS = [
@@ -54,7 +58,7 @@ const SPECS = [
   { icon: Thermometer, label: 'Temperatura', value: 'Fría al tacto' },
   { icon: Boxes, label: 'Material', value: 'PLA alta resistencia' },
   { icon: Award, label: 'Altura de la Copa', value: '27 cm' },
-  { icon: Clock, label: 'Duración por cartucho', value: 'Desde 20seg c/u' },
+  { icon: Clock, label: 'Duración por cartucho', value: 'Desde 20 seg c/u' },
   { icon: RefreshCw, label: 'Cartuchos', value: 'Reemplazables' },
   { icon: Package, label: 'Sistema', value: 'Portátil e inalámbrico a batería' },
   { icon: CircleDot, label: 'Activación', value: 'Botón en la base' },
@@ -62,6 +66,21 @@ const SPECS = [
 ]
 
 const MOBILE_QUERY = '(max-width: 639px)'
+const MIN_ZOOM = 1
+const MAX_ZOOM = 4
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max)
+}
+
+function getOffsetBounds(stageRect, zoom) {
+  if (!stageRect || zoom <= 1) return { x: 0, y: 0 }
+
+  return {
+    x: ((zoom - 1) * stageRect.width) / 2,
+    y: ((zoom - 1) * stageRect.height) / 2,
+  }
+}
 
 function MobileCarousel({ items, activeIndex, onChange, renderItem, labelPrefix }) {
   const touchStartX = useRef(0)
@@ -135,7 +154,7 @@ function MobileCarousel({ items, activeIndex, onChange, renderItem, labelPrefix 
           >
             {items.map((item, index) => (
               <div
-                key={item.n ?? item.title ?? index}
+                key={item.title ?? item.label ?? item.src ?? index}
                 className="shrink-0 px-1"
                 style={{ width: `${100 / items.length}%` }}
               >
@@ -149,13 +168,13 @@ function MobileCarousel({ items, activeIndex, onChange, renderItem, labelPrefix 
       <div className="mt-5 flex items-center justify-center gap-2">
         {items.map((item, index) => (
           <button
-            key={item.n ?? item.title ?? index}
+            key={item.title ?? item.label ?? item.src ?? index}
             type="button"
             onClick={() => onChange(index)}
             aria-label={`${labelPrefix} ${index + 1}`}
             aria-pressed={activeIndex === index}
-            className={`h-2.5 rounded-full transition-all duration-300 ${
-              activeIndex === index ? 'w-7 bg-primary' : 'w-2.5 bg-primary/25'
+            className={`h-3.5 w-3.5 rounded-full border border-primary transition-all duration-300 ${
+              activeIndex === index ? 'bg-primary shadow-glow' : 'bg-white'
             }`}
           />
         ))}
@@ -164,10 +183,384 @@ function MobileCarousel({ items, activeIndex, onChange, renderItem, labelPrefix 
   )
 }
 
+function ImageCarousel({
+  items,
+  activeIndex,
+  onChange,
+  labelPrefix,
+  imageClassName = 'aspect-square w-full object-cover',
+  onImageClick,
+}) {
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
+
+  const showPrev = () => {
+    onChange((activeIndex - 1 + items.length) % items.length)
+  }
+
+  const showNext = () => {
+    onChange((activeIndex + 1) % items.length)
+  }
+
+  const handleTouchStart = (event) => {
+    const { clientX } = event.touches[0]
+    touchStartX.current = clientX
+    touchEndX.current = clientX
+  }
+
+  const handleTouchMove = (event) => {
+    touchEndX.current = event.touches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    const swipeDistance = touchStartX.current - touchEndX.current
+
+    if (Math.abs(swipeDistance) < 50) return
+
+    if (swipeDistance > 0) {
+      showNext()
+      return
+    }
+
+    showPrev()
+  }
+
+  return (
+    <div className="relative overflow-hidden rounded-[2rem] border border-bg/8 bg-white shadow-sm">
+      <button
+        type="button"
+        onClick={showPrev}
+        aria-label={`Ver anterior de ${labelPrefix.toLowerCase()}`}
+        className="absolute left-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-primary/30 bg-white/92 text-primary shadow-glow transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white"
+      >
+        <ChevronLeft className="h-5 w-5" strokeWidth={2.5} />
+      </button>
+
+      <button
+        type="button"
+        onClick={showNext}
+        aria-label={`Ver siguiente de ${labelPrefix.toLowerCase()}`}
+        className="absolute right-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-primary/30 bg-white/92 text-primary shadow-glow transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white"
+      >
+        <ChevronRight className="h-5 w-5" strokeWidth={2.5} />
+      </button>
+
+      <div
+        className="overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{ touchAction: 'pan-y' }}
+      >
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{
+            width: `${items.length * 100}%`,
+            transform: `translateX(-${(activeIndex * 100) / items.length}%)`,
+          }}
+        >
+          {items.map((item, index) => {
+            const content = (
+              <img
+                src={item.src}
+                alt={item.alt}
+                className={imageClassName}
+              />
+            )
+
+            return (
+              <div
+                key={item.src ?? item.alt ?? index}
+                className="shrink-0"
+                style={{ width: `${100 / items.length}%` }}
+              >
+                {onImageClick ? (
+                  <button
+                    type="button"
+                    onClick={() => onImageClick(index)}
+                    className="block w-full"
+                    aria-label={`Abrir ${item.name ?? `${labelPrefix} ${index + 1}`}`}
+                  >
+                    {content}
+                  </button>
+                ) : (
+                  content
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2">
+        {items.map((item, index) => (
+          <button
+            key={item.src ?? item.alt ?? index}
+            type="button"
+            onClick={() => onChange(index)}
+            aria-label={`${labelPrefix} ${index + 1}`}
+            aria-pressed={activeIndex === index}
+            className={`h-3.5 w-3.5 rounded-full border border-primary transition-all duration-300 ${
+              activeIndex === index ? 'bg-primary shadow-glow' : 'bg-white'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function FeatureImagePreview({ items, activeIndex, onClose, onPrev, onNext }) {
+  const item = items[activeIndex]
+  const stageRef = useRef(null)
+  const dragRef = useRef(null)
+  const [zoom, setZoom] = useState(1)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    setZoom(1)
+    setOffset({ x: 0, y: 0 })
+  }, [activeIndex])
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') onClose()
+      if (event.key === 'ArrowLeft') onPrev()
+      if (event.key === 'ArrowRight') onNext()
+      if (event.key === '+' || event.key === '=') {
+        setZoom((current) => clamp(current + 0.5, MIN_ZOOM, MAX_ZOOM))
+      }
+      if (event.key === '-') {
+        setZoom((current) => clamp(current - 0.5, MIN_ZOOM, MAX_ZOOM))
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose, onNext, onPrev])
+
+  useEffect(() => {
+    const preventScroll = (event) => event.preventDefault()
+    const preventScrollKeys = (event) => {
+      const blockedKeys = [' ', 'PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown']
+      if (blockedKeys.includes(event.key)) event.preventDefault()
+    }
+
+    window.addEventListener('wheel', preventScroll, { passive: false })
+    window.addEventListener('touchmove', preventScroll, { passive: false })
+    window.addEventListener('keydown', preventScrollKeys, { passive: false })
+
+    return () => {
+      window.removeEventListener('wheel', preventScroll)
+      window.removeEventListener('touchmove', preventScroll)
+      window.removeEventListener('keydown', preventScrollKeys)
+    }
+  }, [])
+
+  const updateZoom = (nextZoom) => {
+    const stageRect = stageRef.current?.getBoundingClientRect()
+    const clampedZoom = clamp(nextZoom, MIN_ZOOM, MAX_ZOOM)
+    const bounds = getOffsetBounds(stageRect, clampedZoom)
+
+    setZoom(clampedZoom)
+    setOffset((current) => ({
+      x: clamp(current.x, -bounds.x, bounds.x),
+      y: clamp(current.y, -bounds.y, bounds.y),
+    }))
+  }
+
+  const handleWheel = (event) => {
+    event.preventDefault()
+    updateZoom(zoom + (event.deltaY < 0 ? 0.35 : -0.35))
+  }
+
+  const handlePointerDown = (event) => {
+    if (zoom <= 1) return
+
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      offsetX: offset.x,
+      offsetY: offset.y,
+    }
+
+    event.currentTarget.setPointerCapture(event.pointerId)
+  }
+
+  const handlePointerMove = (event) => {
+    if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return
+
+    const stageRect = stageRef.current?.getBoundingClientRect()
+    const bounds = getOffsetBounds(stageRect, zoom)
+    const nextX = dragRef.current.offsetX + (event.clientX - dragRef.current.startX)
+    const nextY = dragRef.current.offsetY + (event.clientY - dragRef.current.startY)
+
+    setOffset({
+      x: clamp(nextX, -bounds.x, bounds.x),
+      y: clamp(nextY, -bounds.y, bounds.y),
+    })
+  }
+
+  const handlePointerUp = (event) => {
+    if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return
+    dragRef.current = null
+    event.currentTarget.releasePointerCapture(event.pointerId)
+  }
+
+  const handleDoubleClick = () => {
+    if (zoom > 1) {
+      setZoom(1)
+      setOffset({ x: 0, y: 0 })
+      return
+    }
+
+    setZoom(2.2)
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-[90] flex items-center justify-center overflow-hidden bg-black/70 px-3 py-4 backdrop-blur-md sm:px-6"
+      onClick={onClose}
+      aria-modal="true"
+      role="dialog"
+      style={{ overscrollBehavior: 'contain' }}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute right-4 top-4 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20"
+        aria-label="Cerrar previsualización"
+      >
+        <X className="h-5 w-5" />
+      </button>
+
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation()
+          onPrev()
+        }}
+        className="absolute left-3 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20 sm:inline-flex"
+        aria-label="Imagen anterior"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation()
+          onNext()
+        }}
+        className="absolute right-3 top-1/2 z-20 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/20 sm:inline-flex"
+        aria-label="Imagen siguiente"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+
+      <div
+        className="relative flex h-full w-full max-w-6xl flex-col items-center justify-center gap-4 overflow-hidden"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div
+          ref={stageRef}
+          className="relative flex h-full max-h-[72vh] w-full items-center justify-center overflow-hidden rounded-[28px] bg-[#0d0d11]"
+          onWheel={handleWheel}
+          onDoubleClick={handleDoubleClick}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          style={{ touchAction: zoom > 1 ? 'none' : 'manipulation' }}
+        >
+          <img
+            src={item.src}
+            alt={item.alt}
+            className={`max-h-full max-w-full object-contain select-none ${
+              zoom > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'
+            }`}
+            draggable="false"
+            style={{
+              transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+              transition: dragRef.current ? 'none' : 'transform 180ms ease-out',
+            }}
+          />
+        </div>
+
+        <div className="flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3 py-2 text-white backdrop-blur">
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation()
+              updateZoom(zoom - 0.5)
+            }}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+            aria-label="Alejar imagen"
+          >
+            <ZoomOut className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation()
+              setZoom(1)
+              setOffset({ x: 0, y: 0 })
+            }}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+            aria-label="Restablecer zoom"
+          >
+            <RotateCcw className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation()
+              updateZoom(zoom + 0.5)
+            }}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+            aria-label="Acercar imagen"
+          >
+            <ZoomIn className="h-4 w-4" />
+          </button>
+          <span className="min-w-[3.5rem] text-center text-sm font-medium">{zoom.toFixed(1)}x</span>
+        </div>
+
+        <div className="flex items-center gap-3 text-center text-white">
+          <button
+            type="button"
+            onClick={onPrev}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 sm:hidden"
+            aria-label="Imagen anterior"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <div>
+            <p className="font-display text-3xl tracking-wide sm:text-4xl">{item.name}</p>
+            <p className="mt-1 text-sm text-white/70">
+              Tocá o hacé doble click para alternar el zoom. Arrastrá la imagen cuando esté ampliada.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onNext}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 sm:hidden"
+            aria-label="Imagen siguiente"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function FeaturesSection() {
   const root = useRef(null)
   const [activeFeature, setActiveFeature] = useState(0)
-  const [activeStep, setActiveStep] = useState(0)
+  const [activeEstucheImage, setActiveEstucheImage] = useState(0)
+  const [activeEstuchePreviewIndex, setActiveEstuchePreviewIndex] = useState(null)
+  const [activePulyImage, setActivePulyImage] = useState(0)
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== 'undefined' && window.matchMedia(MOBILE_QUERY).matches,
   )
@@ -177,8 +570,8 @@ export default function FeaturesSection() {
       revealGroups(root.current, [
         { sel: '.feat-head', y: 40 },
         { sel: '.feat-card', stagger: 0.12, watch: '.feat-grid' },
+        { sel: '.feat-gallery', y: 36 },
         { sel: '.step-head', y: 36 },
-        { sel: '.step-card', stagger: 0.15, watch: '.step-grid' },
         { sel: '.step-image', y: 36 },
         { sel: '.spec-panel', y: 44 },
       ]),
@@ -206,11 +599,80 @@ export default function FeaturesSection() {
     if (!isMobile) return undefined
 
     const timeoutId = window.setTimeout(() => {
-      setActiveStep((current) => (current + 1) % STEPS.length)
-    }, 3000)
+      setActiveEstucheImage((current) => (current + 1) % ESTUCHE_IMAGES.length)
+    }, 3200)
 
     return () => window.clearTimeout(timeoutId)
-  }, [activeStep, isMobile])
+  }, [activeEstucheImage, isMobile])
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setActivePulyImage((current) => (current + 1) % PULY_IMAGES.length)
+    }, 3200)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [activePulyImage])
+
+  useEffect(() => {
+    if (activeEstuchePreviewIndex === null) return undefined
+
+    const scrollY = window.scrollY
+    const previousHtmlOverflow = document.documentElement.style.overflow
+    const previousHtmlHeight = document.documentElement.style.height
+    const previousBodyOverflow = document.body.style.overflow
+    const previousBodyOverscroll = document.body.style.overscrollBehavior
+    const previousBodyPosition = document.body.style.position
+    const previousBodyTop = document.body.style.top
+    const previousBodyWidth = document.body.style.width
+    const previousBodyHeight = document.body.style.height
+    const previousHtmlTouchAction = document.documentElement.style.touchAction
+    const previousBodyTouchAction = document.body.style.touchAction
+
+    document.documentElement.style.overflow = 'hidden'
+    document.documentElement.style.height = '100%'
+    document.documentElement.style.touchAction = 'none'
+    document.body.style.overflow = 'hidden'
+    document.body.style.overscrollBehavior = 'contain'
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
+    document.body.style.height = '100%'
+    document.body.style.touchAction = 'none'
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow
+      document.documentElement.style.height = previousHtmlHeight
+      document.documentElement.style.touchAction = previousHtmlTouchAction
+      document.body.style.overflow = previousBodyOverflow
+      document.body.style.overscrollBehavior = previousBodyOverscroll
+      document.body.style.position = previousBodyPosition
+      document.body.style.top = previousBodyTop
+      document.body.style.width = previousBodyWidth
+      document.body.style.height = previousBodyHeight
+      document.body.style.touchAction = previousBodyTouchAction
+      window.scrollTo(0, scrollY)
+    }
+  }, [activeEstuchePreviewIndex])
+
+  const openEstuchePreview = (index) => {
+    setActiveEstuchePreviewIndex(index)
+  }
+
+  const closeEstuchePreview = () => {
+    setActiveEstuchePreviewIndex(null)
+  }
+
+  const showPrevEstuchePreview = () => {
+    setActiveEstuchePreviewIndex((current) =>
+      current === null ? current : (current - 1 + ESTUCHE_IMAGES.length) % ESTUCHE_IMAGES.length,
+    )
+  }
+
+  const showNextEstuchePreview = () => {
+    setActiveEstuchePreviewIndex((current) =>
+      current === null ? current : (current + 1) % ESTUCHE_IMAGES.length,
+    )
+  }
 
   return (
     <section
@@ -239,11 +701,11 @@ export default function FeaturesSection() {
         </div>
 
         <div className="feat-grid mt-16 hidden w-full grid-cols-2 gap-6 sm:grid lg:grid-cols-4">
-          {FEATURES.map((feature, i) => {
+          {FEATURES.map((feature, index) => {
             const Icon = feature.icon
             return (
               <article
-                key={i}
+                key={index}
                 className="feat-card group relative flex flex-col items-center overflow-hidden rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-glow"
               >
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -278,6 +740,40 @@ export default function FeaturesSection() {
           />
         </div>
 
+        <div className="feat-gallery mt-10 w-full">
+          <div className="mx-auto hidden max-w-4xl gap-5 sm:grid sm:grid-cols-2">
+            {ESTUCHE_IMAGES.map((image, index) => (
+              <button
+                key={image.src}
+                type="button"
+                onClick={() => openEstuchePreview(index)}
+                className="group overflow-hidden rounded-[2rem] border border-bg/8 bg-white shadow-sm"
+                aria-label={`Abrir ${image.name}`}
+              >
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                />
+              </button>
+            ))}
+          </div>
+
+          <div className="mx-auto w-full max-w-[24rem] sm:hidden">
+            <ImageCarousel
+              items={ESTUCHE_IMAGES}
+              activeIndex={activeEstucheImage}
+              onChange={setActiveEstucheImage}
+              labelPrefix="Ver imagen del estuche"
+              onImageClick={openEstuchePreview}
+            />
+          </div>
+
+          <p className="mt-4 text-center text-sm text-bg/55">
+            Estuche Premium incluido en tu compra.
+          </p>
+        </div>
+
         <div id="como-funciona" className="mt-32 flex w-full scroll-mt-24 flex-col items-center">
           <div className="step-head mx-auto max-w-2xl text-center">
             <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
@@ -292,59 +788,15 @@ export default function FeaturesSection() {
             </p>
           </div>
 
-          <div className="step-grid mt-14 hidden w-full max-w-4xl grid-cols-3 gap-6 sm:grid">
-            {STEPS.map((step) => {
-              const Icon = step.icon
-              return (
-                <div
-                  key={step.n}
-                  className="step-card relative flex flex-col items-center rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm"
-                >
-                  <span className="font-display text-5xl tracking-wide text-primary/25">
-                    {step.n}
-                  </span>
-                  <div className="-mt-3 mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
-                    <Icon className="h-6 w-6 text-white" strokeWidth={2.2} />
-                  </div>
-                  <h3 className="text-2xl text-bg">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-bg/55">{step.desc}</p>
-                </div>
-              )
-            })}
-          </div>
-
-          <div className="mt-14 w-full sm:hidden">
-            <MobileCarousel
-              items={STEPS}
-              activeIndex={activeStep}
-              onChange={setActiveStep}
-              labelPrefix="Ver paso"
-              renderItem={(step) => {
-                const Icon = step.icon
-                return (
-                  <div className="relative flex min-h-[248px] flex-col items-center rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm">
-                    <span className="font-display text-5xl tracking-wide text-primary/25">
-                      {step.n}
-                    </span>
-                    <div className="-mt-3 mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
-                      <Icon className="h-6 w-6 text-white" strokeWidth={2.2} />
-                    </div>
-                    <h3 className="text-2xl text-bg">{step.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-bg/55">{step.desc}</p>
-                  </div>
-                )
-              }}
-            />
-          </div>
-
-          <div className="step-image mt-10 w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
-            <img
-              src="/images/vista-detalle-puly.png"
-              alt="Detalle del sistema PULY en la base de la Copa"
-              className="w-full rounded-[2rem] border border-bg/8 bg-white shadow-sm"
+          <div className="step-image mt-14 w-full max-w-[24rem] sm:max-w-[34rem]">
+            <ImageCarousel
+              items={PULY_IMAGES}
+              activeIndex={activePulyImage}
+              onChange={setActivePulyImage}
+              labelPrefix="Ver imagen del sistema PULY"
             />
             <p className="mt-4 text-center text-sm text-bg/55">
-              Nuestro sistema PULY®, se activa únicamente con un botón.
+              Nuestro sistema PULY® se activa únicamente con un botón.
             </p>
           </div>
         </div>
@@ -389,6 +841,16 @@ export default function FeaturesSection() {
           </p>
         </div>
       </div>
+
+      {activeEstuchePreviewIndex !== null && (
+        <FeatureImagePreview
+          items={ESTUCHE_IMAGES}
+          activeIndex={activeEstuchePreviewIndex}
+          onClose={closeEstuchePreview}
+          onPrev={showPrevEstuchePreview}
+          onNext={showNextEstuchePreview}
+        />
+      )}
     </section>
   )
 }

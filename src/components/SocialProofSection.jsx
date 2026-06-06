@@ -46,10 +46,10 @@ export default function SocialProofSection() {
       <div className="relative mx-auto flex max-w-6xl flex-col items-center">
         <div className="sp-head mx-auto max-w-2xl text-center">
           <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
-            Lo que dicen quienes ya la tienen
+            Lo que dicen nuestros clientes
           </span>
           <h2 className="mt-4 text-6xl text-bg sm:text-7xl">
-            Quienes encendieron la <span className="text-gradient-gold">gloria</span>
+            Quiénes encendieron la <span className="text-gradient-gold">gloria</span>
           </h2>
         </div>
 
@@ -66,7 +66,7 @@ export default function SocialProofSection() {
                 ))}
               </div>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-bg/70">
-                “{testimonial.text}”
+                "{testimonial.text}"
               </p>
               <div className="mt-6 flex items-center gap-3">
                 <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-gradient font-display text-lg tracking-wide text-white shadow-glow">
