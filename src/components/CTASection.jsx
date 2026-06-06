@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Mail, Check } from 'lucide-react'
 import { revealGroups } from '../lib/reveal'
-import { WHATSAPP_URL } from '../lib/whatsapp'
 
 const KICKOFF = new Date('2026-06-11T00:00:00')
 
@@ -17,7 +16,7 @@ function getRemaining() {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-export default function CTASection() {
+export default function CTASection({ onOpenPurchaseModal }) {
   const root = useRef(null)
   const [time, setTime] = useState(getRemaining)
   const [email, setEmail] = useState('')
@@ -103,15 +102,14 @@ export default function CTASection() {
               40/150 vendidas
             </span>
           </div>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
+          <button
+            type="button"
+            onClick={onOpenPurchaseModal}
             className="group relative overflow-hidden rounded-full bg-gold-gradient px-12 py-5 text-base font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105"
           >
             <span className="relative z-10">COMPRAR AHORA</span>
             <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
-          </a>
+          </button>
           <p className="mt-3 text-xs uppercase tracking-[0.18em] text-bg/40">
             Pre-venta abierta - Envío incluido
           </p>

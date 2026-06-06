@@ -15,7 +15,8 @@ import SecurityPage from './components/SecurityPage'
 import GallerySection from './components/GallerySection'
 import Footer from './components/Footer'
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton'
-import { DEFAULT_PACK_ID } from './lib/pricing'
+import PurchaseModal from './components/PurchaseModal'
+import { DEFAULT_PACK_ID, getPackById } from './lib/pricing'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -24,6 +25,8 @@ export default function App() {
   const searchParams = new URLSearchParams(window.location.search)
   const isSecurityPage = pathname === '/security' || searchParams.get('page') === 'security'
   const [selectedPackId, setSelectedPackId] = useState(DEFAULT_PACK_ID)
+  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false)
+  const selectedPack = getPackById(selectedPackId)
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -50,6 +53,14 @@ export default function App() {
     }
   }, [])
 
+  const openPurchaseModal = () => {
+    setIsPurchaseModalOpen(true)
+  }
+
+  const closePurchaseModal = () => {
+    setIsPurchaseModalOpen(false)
+  }
+
   if (isSecurityPage) {
     return (
       <>
@@ -62,17 +73,32 @@ export default function App() {
   return (
     <>
       <main className="bg-white text-bg">
-        <NavBar selectedPackId={selectedPackId} />
-        <HeroSection selectedPackId={selectedPackId} />
+        <NavBar
+          selectedPackId={selectedPackId}
+          onOpenPurchaseModal={openPurchaseModal}
+        />
+        <HeroSection
+          selectedPackId={selectedPackId}
+          onOpenPurchaseModal={openPurchaseModal}
+        />
         <ScrollVideoSection />
         <SocialProofSection />
         <FeaturesSection />
         <FAQSection />
-        <PricingSection selectedPackId={selectedPackId} onPackChange={setSelectedPackId} />
-        <CTASection />
+        <PricingSection
+          selectedPackId={selectedPackId}
+          onPackChange={setSelectedPackId}
+          onOpenPurchaseModal={openPurchaseModal}
+        />
+        <CTASection onOpenPurchaseModal={openPurchaseModal} />
         <GallerySection />
         <Footer />
       </main>
+      <PurchaseModal
+        isOpen={isPurchaseModalOpen}
+        onClose={closePurchaseModal}
+        selectedPack={selectedPack}
+      />
       <FloatingWhatsAppButton />
     </>
   )

@@ -1,5 +1,4 @@
 import { ChevronDown, ShieldCheck, Wind, Boxes } from 'lucide-react'
-import { WHATSAPP_URL } from '../lib/whatsapp'
 import { getPackById } from '../lib/pricing'
 
 const TRUST = [
@@ -8,7 +7,7 @@ const TRUST = [
   { icon: Boxes, label: 'Impresa en 3D' },
 ]
 
-export default function HeroSection({ selectedPackId }) {
+export default function HeroSection({ selectedPackId, onOpenPurchaseModal }) {
   const selectedPack = getPackById(selectedPackId)
 
   return (
@@ -42,14 +41,13 @@ export default function HeroSection({ selectedPackId }) {
         </div>
 
         <div className="mt-9 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
+          <button
+            type="button"
+            onClick={onOpenPurchaseModal}
             className="rounded-full bg-gold-gradient px-9 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-glow"
           >
             Comprar ahora - {selectedPack.priceText}
-          </a>
+          </button>
           <a
             href="#como-funciona"
             className="inline-flex items-center gap-1.5 rounded-full border border-primary/50 px-8 py-4 text-sm font-bold uppercase tracking-wider text-primary shadow-glow"

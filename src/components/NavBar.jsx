@@ -1,13 +1,12 @@
-import { WHATSAPP_URL } from '../lib/whatsapp'
 import { getPackById } from '../lib/pricing'
 
 const LINKS = [
   { href: '#features', label: 'El producto' },
-  { href: '#como-funciona', label: 'Cómo funciona' },
+  { href: '#como-funciona', label: 'Como funciona' },
   { href: '#comprar', label: 'Comprar' },
 ]
 
-export default function NavBar({ selectedPackId }) {
+export default function NavBar({ selectedPackId, onOpenPurchaseModal }) {
   const selectedPack = getPackById(selectedPackId)
 
   return (
@@ -33,14 +32,13 @@ export default function NavBar({ selectedPackId }) {
           ))}
         </div>
 
-        <a
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noreferrer"
+        <button
+          type="button"
+          onClick={onOpenPurchaseModal}
           className="rounded-full bg-gold-gradient px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105 sm:px-6 sm:text-sm"
         >
-          Comprar · {selectedPack.priceText}
-        </a>
+          Comprar - {selectedPack.priceText}
+        </button>
       </nav>
     </header>
   )

@@ -4,7 +4,6 @@ import {
   Home, Gift, Beer, PartyPopper, ChevronLeft, ChevronRight,
 } from 'lucide-react'
 import { revealGroups } from '../lib/reveal'
-import { WHATSAPP_URL } from '../lib/whatsapp'
 import { PACKS, getPackById } from '../lib/pricing'
 
 const OCCASIONS = [
@@ -14,7 +13,7 @@ const OCCASIONS = [
   { icon: PartyPopper, text: 'Eventos deportivos, cumpleaños y casamientos temáticos' },
 ]
 
-export default function PricingSection({ selectedPackId, onPackChange }) {
+export default function PricingSection({ selectedPackId, onPackChange, onOpenPurchaseModal }) {
   const root = useRef(null)
   const occasionTouchStartX = useRef(0)
   const occasionTouchEndX = useRef(0)
@@ -315,17 +314,16 @@ export default function PricingSection({ selectedPackId, onPackChange }) {
               </ul>
             </div>
 
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              type="button"
+              onClick={onOpenPurchaseModal}
               className="group relative block overflow-hidden rounded-full bg-gold-gradient px-5 py-4 text-center text-sm font-bold uppercase tracking-wider text-white shadow-glow transition-all duration-300 hover:shadow-glow-lg hover:brightness-105 sm:px-7"
             >
               <span className="relative z-10">
                 Comprar la Copa {selectedPack.label} - {selectedPack.priceText}
               </span>
               <span className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 group-hover:translate-x-full" />
-            </a>
+            </button>
             <p className="text-center text-[11px] text-bg/40">
               Edición de lanzamiento - unidades limitadas.
             </p>
