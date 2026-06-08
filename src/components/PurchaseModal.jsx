@@ -58,7 +58,7 @@ export default function PurchaseModal({ isOpen, onClose, selectedPack }) {
           type="button"
           onClick={onClose}
           aria-label="Cerrar modal de compra"
-          className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full border border-primary/20 bg-white/80 text-primary-dark transition-colors duration-300 hover:bg-primary hover:text-white"
+          className="absolute right-4 top-4 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-primary/20 bg-white/80 text-primary-dark transition-colors duration-300 hover:bg-primary hover:text-white"
         >
           <X className="h-5 w-5" />
         </button>

@@ -118,8 +118,8 @@ export default function PricingSection({ selectedPackId, onPackChange, onOpenPur
                   key={occasion.text}
                   className="occasion-card flex flex-col items-center gap-3 rounded-2xl border border-bg/8 bg-white p-5 text-center shadow-sm"
                 >
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
-                    <Icon className="h-5 w-5 text-white" strokeWidth={2.2} />
+                  <span className="inline-flex h-11 w-11 items-center justify-center text-primary">
+                    <Icon className="h-5 w-5 text-primary" strokeWidth={2.2} />
                   </span>
                   <span className="text-sm leading-relaxed text-bg/65">{occasion.text}</span>
                 </div>
@@ -175,8 +175,8 @@ export default function PricingSection({ selectedPackId, onPackChange, onOpenPur
                               key={occasion.text}
                               className="occasion-card flex min-h-[168px] flex-col items-center gap-3 rounded-2xl border border-bg/8 bg-white p-5 text-center shadow-sm"
                             >
-                              <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
-                                <Icon className="h-5 w-5 text-white" strokeWidth={2.2} />
+                              <span className="inline-flex h-11 w-11 items-center justify-center text-primary">
+                                <Icon className="h-5 w-5 text-primary" strokeWidth={2.2} />
                               </span>
                               <span className="text-sm leading-relaxed text-bg/65">{occasion.text}</span>
                             </div>
@@ -206,7 +206,7 @@ export default function PricingSection({ selectedPackId, onPackChange, onOpenPur
           </div>
         </div>
 
-        <div className="buy-anim mt-14 grid w-full rounded-3xl border border-primary/20 bg-white shadow-glow md:grid-cols-2">
+        <div className="buy-anim mt-14 grid w-full overflow-hidden rounded-3xl border border-primary/20 bg-white shadow-glow md:grid-cols-2">
           <div className="flex flex-col justify-between gap-8 border-b border-bg/8 bg-bg p-6 text-text md:border-b-0 md:border-r md:p-9">
             <div>
               <span className="text-xs font-medium uppercase tracking-[0.24em] text-primary">

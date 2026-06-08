@@ -709,8 +709,8 @@ export default function FeaturesSection() {
                 className="feat-card group relative flex flex-col items-center overflow-hidden rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-glow"
               >
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
-                  <Icon className="h-7 w-7 text-white" strokeWidth={2.2} />
+                <div className="mb-5 inline-flex h-14 w-14 items-center justify-center text-primary">
+                  <Icon className="h-7 w-7 text-primary" strokeWidth={2.2} />
                 </div>
                 <h3 className="text-3xl text-bg">{feature.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-bg/55">{feature.desc}</p>
@@ -729,8 +729,8 @@ export default function FeaturesSection() {
               const Icon = feature.icon
               return (
                 <article className="group flex min-h-[248px] flex-col items-center overflow-hidden rounded-2xl border border-bg/8 bg-white p-7 text-center shadow-sm">
-                  <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
-                    <Icon className="h-7 w-7 text-white" strokeWidth={2.2} />
+                  <div className="mb-5 inline-flex h-14 w-14 items-center justify-center text-primary">
+                    <Icon className="h-7 w-7 text-primary" strokeWidth={2.2} />
                   </div>
                   <h3 className="text-3xl text-bg">{feature.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-bg/55">{feature.desc}</p>
