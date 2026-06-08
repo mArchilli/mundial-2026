@@ -108,8 +108,8 @@ export default function SecurityPage() {
                   key={measure.title}
                   className="security-card relative flex h-full flex-col rounded-3xl border border-bg/8 bg-white p-7 shadow-sm"
                 >
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gold-gradient shadow-glow">
-                    <Icon className="h-6 w-6 text-white" strokeWidth={2.2} />
+                  <div className="inline-flex h-12 w-12 items-center justify-center text-primary">
+                    <Icon className="h-6 w-6 text-primary" strokeWidth={2.2} />
                   </div>
                   <h2 className="mt-5 text-3xl text-bg">{measure.title}</h2>
                   <p className="mt-3 text-sm leading-relaxed text-bg/58">{measure.desc}</p>
